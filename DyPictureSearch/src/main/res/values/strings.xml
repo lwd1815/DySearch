@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">DayuPictureSearch</string>
+    <string name="title">为您识别出以下商品</string>
+    <string name="filter">筛选</string>
+    <string name="category_price">价格</string>
+    <string name="crop_image_activity_title"/>
+    <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>
+    <string name="crop_image_menu_rotate_right">Rotate</string>
+    <string name="crop_image_menu_crop">Crop</string>
+    <string name="crop_image_menu_flip">Flip</string>
+    <string name="crop_image_menu_flip_horizontally">Flip horizontally</string>
+    <string name="crop_image_menu_flip_vertically">Flip vertically</string>
+
+    <string name="pick_image_intent_chooser_title">Select source</string>
+
+    <string name="crop_image_activity_no_permissions">Cancelling, required permissions are not granted</string>
+</resources>
