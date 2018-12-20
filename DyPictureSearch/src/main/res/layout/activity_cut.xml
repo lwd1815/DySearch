@@ -5,46 +5,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#000"
-                >
+>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/imgsearch_toolbar"
+    <RelativeLayout
+        android:id="@+id/dy_cut_tool_rl"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#000"
         android:elevation="1dp"
-        app:contentInsetStart="0dp"
     >
         <TextView
-            android:id="@+id/img_cut_toolbar_title"
+            android:id="@+id/dy_cut_title_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:singleLine="true"
+            android:layout_centerInParent="true"
             android:text="请调整选框再次搜索"
             android:textColor="@color/colorW"
             android:textSize="15sp"/>
         <TextView
-            android:id="@+id/img_cut_toolbar_back"
+            android:id="@+id/dy_cut_back"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:drawableLeft="@mipmap/back_white"
             android:paddingLeft="20dp"/>
 
-
-    </android.support.v7.widget.Toolbar>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_marginTop="?attr/actionBarSize"
         android:padding="8dp"
-        android:id="@+id/cutphoto_layout"
+        android:id="@+id/dy_cutphoto_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <tao.deepbaytech.com.dayupicturesearch.cropper.CropImageView
+        <com.theartofdev.edmodo.cropper.CropImageView
             android:transitionName="sharedView"
-            android:id="@+id/cropImageView"
+            android:id="@+id/dy_cut_coreim"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -55,7 +54,7 @@
             app:cropGuidelines="onTouch"/>
 
         <RelativeLayout
-            android:id="@+id/rl_cut_done"
+            android:id="@+id/dy_cut_done"
             android:background="@color/deep_main_color"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -67,7 +66,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
-                android:id="@+id/cutButton_fail"
+                android:id="@+id/dy_cutButton_fail"
                 android:background="@mipmap/icon_cutphoto_fail"
             />
             <Button
@@ -76,7 +75,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
-                android:id="@+id/cutButton_succeed"
+                android:id="@+id/dy_cutButton_succeed"
                 android:background="@mipmap/icon_cutphoto_succeed"
             />
             <TextView
@@ -90,7 +89,7 @@
 
     </LinearLayout>
     <tao.deepbaytech.com.dayupicturesearch.custom.MetaballView
-        android:id="@+id/metaball_view"
+        android:id="@+id/dy_metaball_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
