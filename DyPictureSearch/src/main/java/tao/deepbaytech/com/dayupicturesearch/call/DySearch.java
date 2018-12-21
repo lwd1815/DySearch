@@ -8,12 +8,14 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import tao.deepbaytech.com.dayupicturesearch.call.callback.DySearchCallbackListener;
 import tao.deepbaytech.com.dayupicturesearch.config.SDKStatusCode;
 import tao.deepbaytech.com.dayupicturesearch.custom.ImgCompress;
@@ -201,12 +203,12 @@ public class DySearch {
                         mEntity.setCategoryId(xSdz.getCate());
                         mEntity.setAttribute(xSdz.getGender());
 
-                        io.reactivex.Observable.just(mEntity)
-                                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-                                .observeOn(io.reactivex.schedulers.Schedulers.io())
-                                .subscribe(new Consumer<ImgSearchEntity>() {
+                        Observable.just(mEntity)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(Schedulers.io())
+                                .subscribe(new Action1<ImgSearchEntity>() {
                                     @Override
-                                    public void accept(ImgSearchEntity cropData) throws Exception {
+                                    public void call(ImgSearchEntity cropData) {
                                         System.out.println(cropData.toString());
                                         final Map<String, Object> normalParams = new HashMap<>();
                                         normalParams.put("searchCode", cropData.getId());

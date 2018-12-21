@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
@@ -130,6 +132,8 @@ public class SearchResultActivity extends AppCompatActivity implements SmartSear
     }
 
     private void refresh() {
+        dysmart.setRefreshHeader(new ClassicsHeader(this));
+        dysmart.setRefreshFooter(new ClassicsFooter(this));
         //下来刷新
         dysmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -143,7 +147,7 @@ public class SearchResultActivity extends AppCompatActivity implements SmartSear
         dysmart.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+                dysmart.finishLoadMore(2000);
             }
         });
     }
