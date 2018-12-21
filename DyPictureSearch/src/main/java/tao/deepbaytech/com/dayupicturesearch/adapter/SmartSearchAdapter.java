@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tao.deepbaytech.com.dayupicturesearch.R;
+import tao.deepbaytech.com.dayupicturesearch.custom.Jump;
 import tao.deepbaytech.com.dayupicturesearch.custom.OneKeyClearEditText;
 import tao.deepbaytech.com.dayupicturesearch.entity.ImgMultipleItem;
 import tao.deepbaytech.com.dayupicturesearch.entity.ProductItemBean;
@@ -199,9 +200,13 @@ public class SmartSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(context, AWareActivity.class);
-//                    intent.putExtra("productId", wareDetailEntity.getId());
-//                    context.startActivity(intent);
+                    if ("JD".equals(wareDetailEntity.getPfrom())){
+                        Jump.getInstance().openJD(context,wareDetailEntity.getDetailUrl()==null?"":wareDetailEntity.getDetailUrl());
+                    }else if ("TB".equals(wareDetailEntity.getPfrom())){
+                        Jump.getInstance().openTaobao(context,wareDetailEntity.getDetailUrl()==null?"":wareDetailEntity.getDetailUrl());
+                    }else if ("TM".equals(wareDetailEntity.getPfrom())){
+                        Jump.getInstance().openTM(context,wareDetailEntity.getDetailUrl()==null?"":wareDetailEntity.getDetailUrl());
+                    }
                 }
             });
         }
