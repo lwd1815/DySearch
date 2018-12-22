@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -266,6 +267,13 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
             @Override
             public void onClick(View v) {
                 goImgCut();
+            }
+        });
+
+        dyclassmore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dyscrollview.fullScroll(ScrollView.FOCUS_RIGHT);
             }
         });
     }
