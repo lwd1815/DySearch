@@ -39,7 +39,7 @@ dependencies {
     //implementation 'top.zibin:Luban:1.1.8'
     implementation files('libs/Luban-1.1.8.aar')
     implementation files('libs/recyclerview-v7-25.4.0.aar')
-    implementation files('libs/SmartRefreshLayout-1.1.0-alpha-14.aar')
+    implementation files('libs/SmartRefreshLayout-1.0.5.1.aar')
     implementation files('libs/glide-4.8.0.aar')
     implementation files('libs/compiler-4.8.0.jar')
     implementation files('libs/annotations-4.8.0.jar')
