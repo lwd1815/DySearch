@@ -36,8 +36,10 @@ import rx.Subscriber;
 import rx.Subscription;
 import tao.deepbaytech.com.dayupicturesearch.R;
 import tao.deepbaytech.com.dayupicturesearch.adapter.DySearchAdapter;
+import tao.deepbaytech.com.dayupicturesearch.custom.DeeHeaderAdapter;
+import tao.deepbaytech.com.dayupicturesearch.custom.DeeHeaderGridDivider;
+import tao.deepbaytech.com.dayupicturesearch.custom.DeeHeaderGridLayoutManager;
 import tao.deepbaytech.com.dayupicturesearch.custom.DrawableTextView;
-import tao.deepbaytech.com.dayupicturesearch.custom.GridDivider;
 import tao.deepbaytech.com.dayupicturesearch.custom.MyHorizontalScrollView;
 import tao.deepbaytech.com.dayupicturesearch.entity.CategoryEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.ImgMultipleItem;
@@ -204,26 +206,16 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         }
     }
     private void initRv() {
-        layoutManager = new GridLayoutManager(this, 4);
         adapter = new DySearchAdapter(null);
         adapter.setSearchListener(this);
-        GridDivider gridDivider = new GridDivider(this);
-        gridDivider.setHasSearch(false);//是否有搜索框
-        dyrv.addItemDecoration(gridDivider);
-        //rvSearchNormal.invalidateItemDecorations();
-        //rvSearchNormal.setHasFixedSize(true);
-        //rvSearchNormal.setNestedScrollingEnabled(false);
-        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (adapter.getData() == null) {
-                    return 0;
-                } else {
-                    return adapter.getData().get(position).getSpanSize();
-                }
-            }
-        });
-        dyrv.setLayoutManager(layoutManager);
+
+        DeeHeaderAdapter deeHeaderAdapter = new DeeHeaderAdapter(adapter);
+        DeeHeaderGridLayoutManager gridLayoutManager =
+                new DeeHeaderGridLayoutManager(this, 2, deeHeaderAdapter);
+        dyrv.setHasFixedSize(true);
+        dyrv.addItemDecoration(new DeeHeaderGridDivider(this, 0));
+        dyrv.setLayoutManager(gridLayoutManager);
+        dyrv.addItemDecoration(new DeeHeaderGridDivider(this, 0));
         dyrv.setAdapter(adapter);
 
         initData();
