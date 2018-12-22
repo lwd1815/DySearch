@@ -94,7 +94,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.dy_activity_test);
 
         dytitle = findViewById(R.id.dy_title_bar);
         dyback = findViewById(R.id.dy_back_bar);
@@ -290,7 +290,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                 initCheckIndex = i;
             }
             RadioButton button = (RadioButton) LayoutInflater.from(this)
-                    .inflate(R.layout.radiogroup_img_search_class, dyradioclass, false);
+                    .inflate(R.layout.dy_radiogroup_img_search_class, dyradioclass, false);
             button.setText(entity.getValue());
             button.setTag(entity.getKey());
             dyradioclass.addView(button);

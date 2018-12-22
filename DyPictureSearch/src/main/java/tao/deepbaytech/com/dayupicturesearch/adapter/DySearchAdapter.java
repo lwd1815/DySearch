@@ -58,7 +58,7 @@ public class DySearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         context = viewGroup.getContext();
-        View view=View.inflate(viewGroup.getContext(),R.layout.item_dy_search,null);
+        View view=View.inflate(viewGroup.getContext(),R.layout.dy_item_dy_search,null);
         return new NormalViewHolder(view);
     }
 

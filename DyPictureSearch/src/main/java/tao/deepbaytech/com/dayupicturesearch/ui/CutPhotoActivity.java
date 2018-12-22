@@ -38,7 +38,7 @@ public class CutPhotoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cut);
+        setContentView(R.layout.dy_activity_cut);
         cutPhotoButtonFail = (Button) findViewById(R.id.dy_cutButton_fail);
         cutPhotoButtonSucceed = (Button) findViewById(R.id.dy_cutButton_succeed);
         cropImageView = (CropImageView) findViewById(R.id.dy_cut_coreim);
