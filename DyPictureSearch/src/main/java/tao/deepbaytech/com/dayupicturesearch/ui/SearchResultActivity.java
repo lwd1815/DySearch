@@ -34,7 +34,7 @@ import java.util.Map;
 import rx.Subscriber;
 import rx.Subscription;
 import tao.deepbaytech.com.dayupicturesearch.R;
-import tao.deepbaytech.com.dayupicturesearch.adapter.SmartSearchAdapter;
+import tao.deepbaytech.com.dayupicturesearch.adapter.DySearchAdapter;
 import tao.deepbaytech.com.dayupicturesearch.custom.DrawableTextView;
 import tao.deepbaytech.com.dayupicturesearch.custom.GridDivider;
 import tao.deepbaytech.com.dayupicturesearch.custom.MyHorizontalScrollView;
@@ -45,7 +45,7 @@ import tao.deepbaytech.com.dayupicturesearch.entity.ProductItemBean;
 import tao.deepbaytech.com.dayupicturesearch.entity.RangeEntity;
 import tao.deepbaytech.com.dayupicturesearch.net.HttpSearch;
 
-public class SearchResultActivity extends AppCompatActivity implements SmartSearchAdapter.SmartSearchListener {
+public class SearchResultActivity extends AppCompatActivity implements DySearchAdapter.DysearchListener {
     private TextView       dytitle;
     private TextView       dyback;
     private TextView       dyfilter;
@@ -71,7 +71,7 @@ public class SearchResultActivity extends AppCompatActivity implements SmartSear
     private RelativeLayout dyrl;
 
     private GridLayoutManager  layoutManager;
-    private SmartSearchAdapter adapter;
+    private DySearchAdapter adapter;
 
     private Map<String, Object> normalParams;
     private Map<String, Object> extraParams;
@@ -204,7 +204,7 @@ public class SearchResultActivity extends AppCompatActivity implements SmartSear
     }
     private void initRv() {
         layoutManager = new GridLayoutManager(this, 4);
-        adapter = new SmartSearchAdapter(null);
+        adapter = new DySearchAdapter(null);
         adapter.setSearchListener(this);
         GridDivider gridDivider = new GridDivider(this);
         gridDivider.setHasSearch(false);//是否有搜索框

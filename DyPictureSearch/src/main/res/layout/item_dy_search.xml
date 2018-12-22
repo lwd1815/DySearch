@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#fff"
+              android:orientation="vertical"
+>
+    <ImageView
+        android:id="@+id/dy_search_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x366"
+        android:background="@color/deep_normal_bg"
+        android:scaleType="centerCrop"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginBottom="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x4">
+            <tao.deepbaytech.com.dayupicturesearch.custom.MTextView
+                android:id="@+id/dy_search_name_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:lineSpacingExtra="@dimen/x3"
+                android:includeFontPadding="false"
+                android:text=""
+                android:textColor="#333333"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/x16"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/dy_search_orgin_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:textColor="#666666"
+                android:textSize="11sp"/>
+
+            <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/dy_search_sales"
+                android:textSize="11sp"
+                android:textColor="#666666"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x40"
+            android:layout_marginTop="@dimen/x8"
+        >
+            <TextView
+                android:id="@+id/dy_search_now_price_title"
+                android:layout_width="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#da2f25"
+                android:layout_marginTop="@dimen/x10"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/dy_search_now_price"
+                android:layout_width="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginLeft="@dimen/x4"
+                android:maxLength="5"
+                android:layout_marginTop="@dimen/x10"
+                android:ellipsize="end"
+                android:layout_centerVertical="true"
+                android:includeFontPadding="false"
+                android:textColor="#da2f25"
+                android:layout_toRightOf="@+id/dy_search_now_price_title"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:id="@+id/dy_search_juan_rlout"
+                android:layout_width="@dimen/x120"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_height="@dimen/x36" >
+                <TextView
+                    android:id="@+id/dy_search_juan_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorW"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>
