@@ -1,7 +1,9 @@
 package tao.deepbaytech.com.dayupicturesearch.call;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import java.io.File;
@@ -26,6 +28,7 @@ import tao.deepbaytech.com.dayupicturesearch.entity.ImgSearchEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.RangeEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.XSdz;
 import tao.deepbaytech.com.dayupicturesearch.net.HttpSearch;
+import tao.deepbaytech.com.dayupicturesearch.ui.SearchResultActivity;
 import top.zibin.luban.OnCompressListener;
 
 /**
@@ -35,7 +38,9 @@ import top.zibin.luban.OnCompressListener;
  */
 public class DySearch {
     private boolean CheckInit;
-
+    private String title;
+    private Context mContext;
+    private String filepath;
     private DySearch() {
     }
 
@@ -62,11 +67,7 @@ public class DySearch {
 
 
     public void title(Context context, String title) {
-        if (title == null || title.isEmpty()) {
-
-        } else {
-
-        }
+        this.title=title;
     }
 
     /**
@@ -115,7 +116,9 @@ public class DySearch {
     private ImgSearchEntity mEntity;
 
 
-    private void getCropRect(Context context, String imagePath) {
+    private void search(Context context, String imagePath) {
+        this.mContext=context;
+        this.filepath=imagePath;
         File file = new File(imagePath);
         if (file.length() < 512 || !file.exists()) {
             Toast.makeText(context, "图片识别错误，请重新选择。。", Toast.LENGTH_SHORT).show();
@@ -244,11 +247,14 @@ public class DySearch {
                                                     public void onNext(ImgSearchEntity imgSearchEntity) {
                                                         System.out.println(imgSearchEntity.toString());
                                                         if (imgSearchEntity.getState() == 0) {
-                                                            RxBus.getDefault().postSticky(new ImgDataEvent
-                                                                    (imgSearchEntity, true));
-                                                            //calculateAnimateParam(range_trans);
+                                                            Bundle bundle=new Bundle();
+                                                            bundle.putParcelable("dy_result",imgSearchEntity);
+                                                            Intent intent = new Intent(mContext,SearchResultActivity.class);
+                                                            intent.putExtras(bundle);
+                                                            intent.putExtra("bitmapUriPath", filepath);
+                                                            intent.putExtra("title",title);
+                                                            mContext.startActivity(intent);
                                                         } else {
-                                                            //showCamera();
                                                         }
                                                     }
                                                 });

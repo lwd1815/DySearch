@@ -90,7 +90,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
     private boolean canBack;
 
     private String         searchImgPath;
-
+    private String mTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +130,8 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
 
         Bundle bundle = getIntent().getExtras();
         entity = (ImgSearchEntity) bundle.getParcelable("dy_result");
+        mTitle = getIntent().getStringExtra("title");
+        dytitle.setText(mTitle);
         initRv();
         refresh();
     }

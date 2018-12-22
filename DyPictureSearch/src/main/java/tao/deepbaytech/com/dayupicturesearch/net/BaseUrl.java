@@ -23,7 +23,7 @@ public class BaseUrl {
     //线下
     private static String API_UNDER_LINE="http://api.deepbaytech.com/";
     //线上
-    private static String API_ON_LINE="http://api.dayuyoupin.com/";
+    private static String API_ON_LINE="https://api.dayuyoupin.com/";
 
     /**
      * 不加版本号
