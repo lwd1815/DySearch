@@ -303,7 +303,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                 normalParams.put("category", view.getTag() + "");
                 extraParams.clear();
                 showWaiting(true);
-                // refreshData();
+                refreshData();
             }
         });
 
