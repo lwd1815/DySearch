@@ -11,7 +11,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.fastjson.FastJsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -21,6 +20,7 @@ import rx.schedulers.Schedulers;
 import tao.deepbaytech.com.dayupicturesearch.entity.BaseResponse;
 import tao.deepbaytech.com.dayupicturesearch.entity.ImgSearchEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.XSdz;
+import tao.deepbaytech.com.dayupicturesearch.net.fastadapter.FastJsonConverterFactory;
 
 /**
  * @author IT烟酒僧
