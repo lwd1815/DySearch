@@ -116,7 +116,7 @@ public class DySearch {
     private ImgSearchEntity mEntity;
 
 
-    private void search(Context context, String imagePath) {
+    public void search(Context context, String imagePath) {
         this.mContext=context;
         this.filepath=imagePath;
         File file = new File(imagePath);
