@@ -17,8 +17,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
 }
 
+task buildMyJar(type: Jar, dependsOn: ['build']) {
+    //导出的jar文件名称
+    archiveName = 'dysearch.jar'
+    //从哪个目录打包jar
+    from('build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/')
+    //导出的jar文件的存放目录（未指定则默认存放在build/libs下）
+    destinationDir = file('build/libs')
+    //去掉不要的类
+    exclude('tao/deepbaytech/com/dayupicturesearch/BuildConfig.class')
+    exclude('tao/deepbaytech/com/dayupicturesearch/BuildConfig\$*.class')
+    exclude('**/R.class')
+    exclude('**/R\$*.class')
+    //需要打包的类
+    include('tao/deepbaytech/com/dayupicturesearch/**/*.class')
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
