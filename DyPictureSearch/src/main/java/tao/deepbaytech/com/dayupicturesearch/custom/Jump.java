@@ -53,6 +53,7 @@ public class Jump {
      */
     public void openJD(Context context,String url,String ids) {
         mContext=context;
+
         if (checkPackage("com.jingdong.app.mall")) {
             //这是京东商品详情页
             // 需要提取商品id，添加到下面url，不能单独将商品详情页作为url传入
