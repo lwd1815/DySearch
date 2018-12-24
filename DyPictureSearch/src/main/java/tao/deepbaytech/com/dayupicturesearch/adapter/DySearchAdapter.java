@@ -119,11 +119,11 @@ public class DySearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             viewHolder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     if ("JD".equals(bean.getPfrom())){
-                        Jump.getInstance().openJD(context,bean.getDetailUrl()==null?"":bean.getDetailUrl());
+                        Jump.getInstance().openJD(context,bean.getDetailUrl()==null?"":bean.getDetailUrl(),bean.getPfromId());
                     }else if ("TB".equals(bean.getPfrom())){
-                        Jump.getInstance().openTaobao(context,bean.getDetailUrl()==null?"":bean.getDetailUrl());
+                        Jump.getInstance().openTaobao(context,bean.getDetailUrl()==null?"":bean.getDetailUrl(),bean.getPfromId());
                     }else if ("TM".equals(bean.getPfrom())){
-                        Jump.getInstance().openTM(context,bean.getDetailUrl()==null?"":bean.getDetailUrl());
+                        Jump.getInstance().openTM(context,bean.getDetailUrl()==null?"":bean.getDetailUrl(),bean.getPfromId());
                     }
                 }
             });
