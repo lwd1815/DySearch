@@ -71,7 +71,7 @@ public class DySearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .load(bean.getCoverImage())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
                             .centerCrop()
-                            .placeholder(R.mipmap.loading))
+                            .placeholder(R.mipmap.dy_search_loading))
                     .into(viewHolder1.dysearchiv);
             Test(viewHolder1.dysearchtitle,bean);
             if (bean.getSales()!=0){
@@ -95,20 +95,20 @@ public class DySearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //优惠券
             if (bean.getDisplayType()==1){
                 viewHolder1.dysearchrlout.setVisibility(View.VISIBLE);
-                viewHolder1.dysearchrlout.setBackgroundResource(R.mipmap.youhuiquan_new_2x);
-                viewHolder1.dysearchjuancontent.setText(viewHolder.itemView.getContext().getString(R.string.juan)+bean.getDisplayContent());
+                viewHolder1.dysearchrlout.setBackgroundResource(R.mipmap.dy_search_youhuiquan_new_2x);
+                viewHolder1.dysearchjuancontent.setText(viewHolder.itemView.getContext().getString(R.string.dy_search_juan)+bean.getDisplayContent());
                 viewHolder1.dysearchnowpricetitle.setText("劵后¥");
                 //折扣
             }else if (bean.getDisplayType()==2){
                 viewHolder1.dysearchrlout.setVisibility(View.VISIBLE);
-                viewHolder1.dysearchrlout.setBackgroundResource(R.mipmap.discount_new_2x);
-                viewHolder1.dysearchjuancontent.setText(bean.getDisplayContent()+viewHolder.itemView.getContext().getString(R.string.discount));
+                viewHolder1.dysearchrlout.setBackgroundResource(R.mipmap.dy_search_discount_new_2x);
+                viewHolder1.dysearchjuancontent.setText(bean.getDisplayContent()+viewHolder.itemView.getContext().getString(R.string.dy_search_discount));
                 viewHolder1.dysearchnowpricetitle.setText("折后¥");
                 //返利
             }else if (bean.getDisplayType()==3){
                 viewHolder1.dysearchrlout.setVisibility(View.VISIBLE);
-                viewHolder1.dysearchrlout.setBackgroundResource(R.mipmap.fanli_new_2x);
-                viewHolder1.dysearchjuancontent.setText(viewHolder.itemView.getContext().getString(R.string.fanli)+bean.getDisplayContent());
+                viewHolder1.dysearchrlout.setBackgroundResource(R.mipmap.dy_search_fanli_new_2x);
+                viewHolder1.dysearchjuancontent.setText(viewHolder.itemView.getContext().getString(R.string.dy_search_fanli)+bean.getDisplayContent());
                 viewHolder1.dysearchnowpricetitle.setText("返后¥");
                 //普通
             }else if (bean.getDisplayType()==4){
@@ -142,11 +142,11 @@ public class DySearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         SpannableString ss = new SpannableString(texts);
         if ("TB".equals(ware.getPfrom())){
-            is = new ImageSpan(context, R.mipmap.indexer_tb_icon);
+            is = new ImageSpan(context, R.mipmap.dy_search_indexer_tb_icon);
         }else if ("TM".equals(ware.getPfrom())){
-            is = new ImageSpan(context, R.mipmap.indexer_tm_icon);
+            is = new ImageSpan(context, R.mipmap.dy_search_indexer_tm_icon);
         }else if ("JD".equals(ware.getPfrom())){
-            is = new ImageSpan(context, R.mipmap.indexer_jd_icon);
+            is = new ImageSpan(context, R.mipmap.dy_search_indexer_jd_icon);
         }
         ss.setSpan(is,0,1,0);
         mTextView.setMText(ss);

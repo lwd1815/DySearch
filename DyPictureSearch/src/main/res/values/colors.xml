@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="dy_search_colorPrimary">#008577</color>
+    <color name="dy_search_colorPrimaryDark">#00574B</color>
+    <color name="dy_search_colorAccent">#D81B60</color>
     <color name="deep_normal_bg">#ececec</color>
-    <color name="colorW">#ffff</color>
+    <color name="deep_colorW">#ffff</color>
     <color name="deep_normal_color">#444444</color>
-    <color name="category_title_text_color">#323232</color>
     <color name="deep_main_color">#fd6363</color>
     <color name="deep_9_color">#999999</color>
     <color name="deep_2_color">#222222</color>

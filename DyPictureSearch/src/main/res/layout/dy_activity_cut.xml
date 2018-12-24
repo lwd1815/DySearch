@@ -22,14 +22,14 @@
             android:singleLine="true"
             android:layout_centerInParent="true"
             android:text="请调整选框再次搜索"
-            android:textColor="@color/colorW"
+            android:textColor="@color/deep_colorW"
             android:textSize="15sp"/>
         <TextView
             android:id="@+id/dy_cut_back"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:drawableLeft="@mipmap/back_white"
+            android:drawableLeft="@mipmap/dy_search_back_white"
             android:paddingLeft="20dp"/>
 
     </RelativeLayout>
@@ -67,7 +67,7 @@
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:id="@+id/dy_cutButton_fail"
-                android:background="@mipmap/icon_cutphoto_fail"
+                android:background="@mipmap/dy_search_icon_cutphoto_fail"
             />
             <Button
                 android:visibility="gone"
@@ -76,12 +76,12 @@
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:id="@+id/dy_cutButton_succeed"
-                android:background="@mipmap/icon_cutphoto_succeed"
+                android:background="@mipmap/dy_search_icon_cutphoto_succeed"
             />
             <TextView
                 android:layout_centerInParent="true"
                 android:text="确定"
-                android:textColor="@color/colorW"
+                android:textColor="@color/deep_colorW"
                 android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

@@ -3,14 +3,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/dy_search_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/dy_search_colorPrimaryDark</item>
+        <item name="colorAccent">@color/dy_search_colorAccent</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:listDivider">@drawable/divider</item>
+        <item name="android:listDivider">@drawable/dy_search_divider</item>
     </style>
     <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:listDivider">@drawable/divider</item>
+        <item name="android:listDivider">@drawable/dy_search_divider</item>
     </style>
 </resources>

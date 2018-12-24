@@ -3,12 +3,12 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:gravity="center"
         android:button="@null"
-        android:paddingLeft="@dimen/radio_imgsearch_textpadding"
-        android:paddingRight="@dimen/radio_imgsearch_textpadding"
+        android:paddingLeft="@dimen/dy_radio_imgsearch_textpadding"
+        android:paddingRight="@dimen/dy_radio_imgsearch_textpadding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
         android:text="裙装"
-        android:textColor="@color/imgsearch_cat_text_color"
-        android:textSize="@dimen/radio_img_search_textsize"
-        android:background="@drawable/img_search_radio_selector"/>
+        android:textColor="@color/dy_search_cat_text_color"
+        android:textSize="@dimen/dy_radio_img_search_textsize"
+        android:background="@drawable/dy_search_radio_selector"/>
