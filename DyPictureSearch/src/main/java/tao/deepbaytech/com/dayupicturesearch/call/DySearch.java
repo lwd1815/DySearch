@@ -5,6 +5,7 @@ import android.content.Context;
 import tao.deepbaytech.com.dayupicturesearch.call.callback.DySearchCallbackListener;
 import tao.deepbaytech.com.dayupicturesearch.config.Constans;
 import tao.deepbaytech.com.dayupicturesearch.config.SDKStatusCode;
+import tao.deepbaytech.com.dayupicturesearch.net.NetUtil;
 import tao.deepbaytech.com.dayupicturesearch.net.SearchImpl;
 
 /**
@@ -68,6 +69,12 @@ public class DySearch {
      * @param callbackListener
      */
    public void search(Context context, String imgPath, final DySearchCallbackListener<String> callbackListener){
+       //检查网络
+       boolean networkConnected = NetUtil.getInstance().isNetworkConnected(context);
+       if (!networkConnected){
+           callbackListener.callback(Constans.NETWORKSTATUE,Constans.NETWORKERROR);
+           return;
+       }
        int code=SearchImpl.getInstance().search(context,imgPath);
        switch (code){
            case Constans.PICTURE_SUCCESS:

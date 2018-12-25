@@ -14,4 +14,7 @@ public final class Constans {
     public static final int PICTURE_SUCCESS=0;
     public static final String SEARCH_SUCCESS="搜索成功";
     public static final String SEARCH_FAILUER="搜索失败";
+
+    public static final int NETWORKSTATUE=3;
+    public static final String NETWORKERROR="网络连接错误";
 }
