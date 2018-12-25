@@ -2,12 +2,14 @@ package tao.deepbaytech.com.dayupicturesearch.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 /**
  * @author IT烟酒僧
  * created   2018/12/19 16:58
  * desc:
  */
+@Keep
 public class CouponInfoBean implements Parcelable {
 
     /**

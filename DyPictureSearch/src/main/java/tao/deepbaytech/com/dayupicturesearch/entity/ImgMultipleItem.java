@@ -1,9 +1,11 @@
 package tao.deepbaytech.com.dayupicturesearch.entity;
 
+import android.support.annotation.Keep;
+
 /**
  * Created by EtherealPatrick on 2017/4/11.
  */
-
+@Keep
 public class ImgMultipleItem {
   public static final int             FLAG = 1;
   public static final int             WARE = 2;

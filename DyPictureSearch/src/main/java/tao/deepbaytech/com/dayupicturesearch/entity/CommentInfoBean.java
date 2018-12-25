@@ -2,6 +2,7 @@ package tao.deepbaytech.com.dayupicturesearch.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * created   2018/12/19 16:58
  * desc:
  */
+@Keep
 public class CommentInfoBean implements Parcelable {
 
     /**
@@ -59,6 +61,7 @@ public class CommentInfoBean implements Parcelable {
         dest.writeInt(count);
     }
 
+    @Keep
     public  class TagsBean implements Parcelable{
         /**
          * name : 很好值得买

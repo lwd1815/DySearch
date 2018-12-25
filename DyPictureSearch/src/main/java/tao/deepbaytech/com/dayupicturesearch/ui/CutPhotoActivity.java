@@ -44,7 +44,6 @@ public class CutPhotoActivity extends AppCompatActivity {
         cropImageView = (CropImageView) findViewById(R.id.dy_cut_coreim);
         metaballView = (MetaballView) findViewById(R.id.dy_metaball_view);
         cutphotoLayout = (LinearLayout) findViewById(R.id.dy_cutphoto_layout);
-
         cutBack = (TextView) findViewById(R.id.dy_cut_back);
         cutDone = (RelativeLayout) findViewById(R.id.dy_cut_done);
 
@@ -65,14 +64,6 @@ public class CutPhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Rect rect = cropImageView.getCropRect();
-                System.out.println("Img--------width--" + imageWidth + "--height--" + imageHeight + "--cropLX--"
-                        + rect.left
-                        + "--cropLY--"
-                        + rect.top
-                        + "--cropRX--"
-                        + rect.right
-                        + "--cropRY--"
-                        + rect.bottom);
                 //回传坐标数据
                 Intent intent = new Intent(CutPhotoActivity.this, SearchResultActivity.class);
                 intent.putExtra("zuobiao",new int[]{(int) ((rect.left*1.0/imageWidth)*10000),(int) ((rect.top*1.0/imageHeight)*10000),
@@ -102,9 +93,7 @@ public class CutPhotoActivity extends AppCompatActivity {
     }
 
     private void setImage() {
-        //File file = new File(imagePath);
         getImageWidthAndHeight(imagePath);
-        //Uri uri = Uri.fromFile(file);
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
         cropImageView.setImageBitmap(bitmap);
         if (nowZuobiao!=null && nowZuobiao.length==4){
@@ -115,8 +104,6 @@ public class CutPhotoActivity extends AppCompatActivity {
     public void setImageRect(float[] zuobiao) {
         Rect rect = new Rect((int) (zuobiao[0]*imageWidth), (int) (zuobiao[1]*imageHeight), (int) (zuobiao[2]*imageWidth), (int) (zuobiao[3]*imageHeight));
         cropImageView.setCropRect(rect);
-        //        Rect rect = new Rect(cropImageView.getCropRect());
-        System.out.println("zuobiao ---> "+zuobiao[0]+"  -  "+zuobiao[1]+"  -  "+zuobiao[2]+"  -  "+zuobiao[3]);
         Log.e("rect-=-=--------", rect.left + "......" + rect.top + "......" + rect.right + "....." + rect.bottom + "....");
     }
 

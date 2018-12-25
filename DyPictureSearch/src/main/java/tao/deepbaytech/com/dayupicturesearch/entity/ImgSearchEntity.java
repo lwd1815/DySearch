@@ -2,6 +2,7 @@ package tao.deepbaytech.com.dayupicturesearch.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,8 @@ import java.util.Arrays;
  * created   2018/12/19 17:47
  * desc:
  */
+
+@Keep
 public class ImgSearchEntity implements Parcelable {
 
     private String id;

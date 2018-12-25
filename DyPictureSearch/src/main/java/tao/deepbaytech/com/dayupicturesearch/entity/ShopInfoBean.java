@@ -2,6 +2,7 @@ package tao.deepbaytech.com.dayupicturesearch.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * created   2018/12/19 16:57
  * desc:
  */
+@Keep
 public class ShopInfoBean implements Parcelable {
     /**
      * name : 黛梦思睡衣馆11

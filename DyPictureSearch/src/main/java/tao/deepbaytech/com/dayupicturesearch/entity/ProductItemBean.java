@@ -2,6 +2,7 @@ package tao.deepbaytech.com.dayupicturesearch.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ import java.util.List;
  * created   2018/12/19 16:56
  * desc:
  */
+
+@Keep
 public class ProductItemBean implements Parcelable {
     private String          id;
     private String          title;

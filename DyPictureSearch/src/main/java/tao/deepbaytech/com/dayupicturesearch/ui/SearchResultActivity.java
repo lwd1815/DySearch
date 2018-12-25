@@ -36,6 +36,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import tao.deepbaytech.com.dayupicturesearch.R;
 import tao.deepbaytech.com.dayupicturesearch.adapter.DySearchAdapter;
+import tao.deepbaytech.com.dayupicturesearch.config.Constans;
 import tao.deepbaytech.com.dayupicturesearch.custom.DeeHeaderAdapter;
 import tao.deepbaytech.com.dayupicturesearch.custom.DeeHeaderGridDivider;
 import tao.deepbaytech.com.dayupicturesearch.custom.DeeHeaderGridLayoutManager;
@@ -95,43 +96,39 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dy_activity_test);
-
         dytitle = findViewById(R.id.dy_title_bar);
         dyback = findViewById(R.id.dy_back_bar);
         dyfilter = findViewById(R.id.dy_filter);
         dytoolbar = findViewById(R.id.dy_toolbar);
-
         dycorp = findViewById(R.id.dy_crop);
         dyradioclass = findViewById(R.id.dy_radio_class);
         dyscrollview = findViewById(R.id.dy_srcollview);
         dyclassmore = findViewById(R.id.dy_class_more);
         dycutfilter = findViewById(R.id.dy_ll_cut_filter);
-
         dyrv = findViewById(R.id.dy_rv);
         dysmart = findViewById(R.id.dy_smartrefresh);
-
         dysortsmile = findViewById(R.id.dy_sort_smile);
         dysortprice = findViewById(R.id.dy_sort_price);
         dysortradio = findViewById(R.id.dy_sort_radio);
-
         dytopbtn = findViewById(R.id.dy_top_btn);
         dyfeedbtb = findViewById(R.id.feedback_btn);
         dyprofy = findViewById(R.id.dy_progress_fy);
-
         dyrl = findViewById(R.id.dy_rl);
 
 
         totalParams = new HashMap<>();
         normalParams = new HashMap<>();
         extraParams = new HashMap<>();
-
         normalData = new ArrayList<>();
         initclick();
-
         Bundle bundle = getIntent().getExtras();
         entity = (ImgSearchEntity) bundle.getParcelable("dy_result");
         mTitle = getIntent().getStringExtra("title");
-        dytitle.setText(mTitle);
+        if (mTitle.isEmpty()||mTitle==null){
+            dytitle.setText(Constans.DEFAULTTITLE);
+        }else {
+            dytitle.setText(mTitle);
+        }
         initRv();
         refresh();
     }
@@ -139,7 +136,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
     private void refresh() {
         dysmart.setRefreshHeader(new ClassicsHeader(this));
         dysmart.setRefreshFooter(new ClassicsFooter(this));
-        //下来刷新
+        //下拉刷新
         dysmart.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -148,7 +145,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
             }
         });
 
-        //上啦加载
+        //上拉加载
         dysmart.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -172,7 +169,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                     @Override public void onError(Throwable e) {
                         e.printStackTrace();
                         showWaiting(false);
-                        //stateLayout.showEmpty();
                     }
 
                     @Override public void onNext(ImgSearchEntity entity) {
@@ -183,19 +179,12 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                         List<ProductItemBean> wareList = entity.getProductItems();
                         List<CategoryEntity> subList = entity.getSubClassItems();
                         List<CategoryEntity> brandList = entity.getBrandItems();
-
                         normalData.clear();
-                        //normalData.add(
-                        //    new ImgMultipleItem(ImgMultipleItem.SEARCH, ImgMultipleItem.SEARCH_SPAN_SIZE, ""));
                         for (ProductItemBean bean : wareList) {
                             normalData.add(
                                     new ImgMultipleItem(ImgMultipleItem.WARE, ImgMultipleItem.WARE_SPAN_SIZE, bean));
                         }
-                        //normalData.add(new ImgMultipleItem(ImgMultipleItem.TRANS,ImgMultipleItem.TRANS_SPAN_SIZE,"trans"));
-
                         adapter.setNewData(normalData);
-                        //stateLayout.showContent();
-
                         //text search ,category 可能会变
                         normalParams.put("category", entity.getCategoryId());
                     }
@@ -226,7 +215,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
 
     private void initcut() {
         searchImgPath = getIntent().getStringExtra("bitmapUriPath");
-        //transitionImgPath = getIntent().getStringExtra("transitionImgPath");
         Glide.with(this).load(searchImgPath).into(dycorp);
     }
 
@@ -239,8 +227,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                             bean));
         }
         adapter.setNewData(normalData);
-        //stateLayout.showContent();
-
         normalParams.put("searchCode", entity.getId());
         range = entity.getRange();
         normalParams.put("picRange",
@@ -309,8 +295,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
             }
         });
 
-        //System.err.println("scrollClass.getMaxScrollAmount() : " + scrollClass.getMaxScrollAmount());
-
         if (dyradioclass.getChildCount() < 8) {
             dyclassmore.setVisibility(View.INVISIBLE);
         } else {
@@ -344,7 +328,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         }
         Intent intentImg = new Intent(this, CutPhotoActivity.class);
         intentImg.putExtra("bitmapUriPath", searchImgPath);
-        System.out.println(range.toString());
         intentImg.putExtra("zuobiao", new float[] {
                 (float) (range.getY1() * 1.00 / 10000), (float) (range.getX1() * 1.00 / 10000),
                 (float) (range.getY2() * 1.00 / 10000), (float) (range.getX2() * 1.00 / 10000)
@@ -363,7 +346,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                     rangeEntity.setX1(zuobiao[1]);
                     rangeEntity.setY2(zuobiao[2]);
                     rangeEntity.setX2(zuobiao[3]);
-
                     range = rangeEntity;
                     normalParams.put("picRange",
                             range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
@@ -374,8 +356,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                         normalParams.remove("userBox");
                     }
                     normalParams.put("userBox",1);
-
-
                     showWaiting(true);
                     isFromCrop = true;
                     refreshData();
