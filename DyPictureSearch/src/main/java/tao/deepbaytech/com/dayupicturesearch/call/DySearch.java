@@ -115,14 +115,13 @@ public class DySearch {
     private RangeEntity     range;
     private ImgSearchEntity mEntity;
 
-
-    public void search(Context context, String imagePath) {
+    public void search(Context context, final String imagePath) {
         this.mContext=context;
         this.filepath=imagePath;
+
         File file = new File(imagePath);
         if (file.length() < 512 || !file.exists()) {
             Toast.makeText(context, "图片识别错误，请重新选择。。", Toast.LENGTH_SHORT).show();
-            //onBackPressedSupport();
         }
 
         if (file.length() > 300 * 1024) {
