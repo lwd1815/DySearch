@@ -124,7 +124,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         Bundle bundle = getIntent().getExtras();
         entity = (ImgSearchEntity) bundle.getParcelable("dy_result");
         mTitle = getIntent().getStringExtra("title");
-        if (mTitle.isEmpty()||mTitle==null){
+        if (mTitle==null||mTitle.isEmpty()){
             dytitle.setText(Constans.DEFAULTTITLE);
         }else {
             dytitle.setText(mTitle);

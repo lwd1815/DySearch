@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +68,8 @@ public class DySearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             final ProductItemBean bean = mData.get(position).getBean();
             Glide.with(context)
                     .load(bean.getCoverImage())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .centerCrop()
-                            .placeholder(R.mipmap.dy_search_loading))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop().placeholder(R.mipmap.dy_search_loading)
                     .into(viewHolder1.dysearchiv);
             Test(viewHolder1.dysearchtitle,bean);
             if (bean.getSales()!=0){

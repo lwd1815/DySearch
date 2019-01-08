@@ -14,8 +14,10 @@ public class BaseUrl {
 
 
     //线上
-    private static String API_ON_LINE = "https://api.dayuyoupin.com/";
+    private static String API_ON_LINE = "http://api.dayuyoupin.com/";
 
+    //测试
+    private static String TEST_PATH="http://192.168.1.28:8000/";
 
     //全网
     private static String ALL_PATH   = "mobile/api/v1.0.0/";

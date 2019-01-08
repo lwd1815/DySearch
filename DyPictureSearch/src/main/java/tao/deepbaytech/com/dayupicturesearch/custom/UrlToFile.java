@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * @author IT烟酒僧
@@ -43,6 +44,12 @@ public class UrlToFile {
      * @return
      */
         public final static Bitmap returnBitMap(String url) {
+            boolean rource = getRource(url);
+
+            if (!rource){
+                return null;
+            }
+
             URL myFileUrl = null;
             Bitmap bitmap = null;
             try {
@@ -106,6 +113,24 @@ public class UrlToFile {
             sdDir = Environment.getExternalStorageDirectory();//获取跟目录
         }
         return sdDir.toString();
+    }
+
+    /**
+     * 判断图片地址是否有效
+     * @param source
+     * @return
+     */
+    public static boolean getRource(String source) {
+        try {
+            URL url = new URL(source);
+            URLConnection uc = url.openConnection();
+            InputStream in = uc.getInputStream();
+            if (source.equalsIgnoreCase(uc.getURL().toString()))
+                in.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
 
