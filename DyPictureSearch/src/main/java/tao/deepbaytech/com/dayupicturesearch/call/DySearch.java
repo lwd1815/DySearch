@@ -16,7 +16,8 @@ import tao.deepbaytech.com.dayupicturesearch.net.SearchImpl;
  */
 public class DySearch {
     private boolean CheckInit;
-    private String title;
+    private String  title;
+
     private DySearch() {
     }
 
@@ -35,6 +36,7 @@ public class DySearch {
 
     /**
      * sdk 初始化
+     *
      * @param context
      * @param o
      * @param callbackListener
@@ -46,6 +48,7 @@ public class DySearch {
 
     /**
      * toolbar title
+     *
      * @param title
      */
     public void title(String title) {
@@ -55,44 +58,44 @@ public class DySearch {
 
     /**
      * 无回调
+     *
      * @param context
      * @param imgPath
      */
-    public void search(Context context,String imgPath){
-        SearchImpl.getInstance().search(context,imgPath);
+    public void search(Context context, String imgPath) {
+        SearchImpl.getInstance().search(context, imgPath);
     }
 
     /**
      * 根据截图返回路径
+     *
      * @param bfile
      * @return
      */
     public String getFilePath(byte[] bfile) {
-        String path=ByteToFile.getInstance().getFilePath(bfile);
+        String path = ByteToFile.getInstance().getFilePath(bfile);
         return path;
     }
+
     /**
      * 搜索
+     *
      * @param context
      * @param imgPath
      * @param callbackListener
      */
-   public void search(Context context, String imgPath, final DySearchCallbackListener<String> callbackListener){
-       //检查网络
-       boolean networkConnected = NetUtil.getInstance().isNetworkConnected(context);
-       if (!networkConnected){
-           callbackListener.callback(Constans.NETWORKSTATUE,Constans.NETWORKERROR);
-           return;
-       }
-       int code=SearchImpl.getInstance().search(context,imgPath);
-       switch (code){
-           case Constans.PICTURE_SUCCESS:
-               callbackListener.callback(Constans.PICTURE_SUCCESS,Constans.SEARCH_SUCCESS);
-               break;
-           case Constans.PICTURE_ERROR:
-               callbackListener.callback(Constans.PICTURE_ERROR,Constans.SEARCH_FAILUER);
-               break;
-       }
-   }
+    public void search(Context context, String imgPath, final DySearchCallbackListener<String> callbackListener) {
+        //检查网络
+        boolean networkConnected = NetUtil.getInstance().isNetworkConnected(context);
+        if (!networkConnected) {
+            callbackListener.callback(Constans.NETWORKSTATUE, Constans.NETWORKERROR);
+            return;
+        }
+       SearchImpl.getInstance().getCode(context, imgPath,callbackListener);
+    }
+
+    public void Jump(Context context, String imgPath) {
+        SearchImpl.getInstance().search(context, imgPath);
+    }
 
 }
