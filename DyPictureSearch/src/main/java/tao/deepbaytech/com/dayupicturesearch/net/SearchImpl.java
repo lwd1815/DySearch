@@ -212,6 +212,8 @@ public class SearchImpl {
 
 
     public void getCode(Context context, final String imagePath,final DySearchCallbackListener<String> callbackListener) {
+        this.mContext = context;
+        this.filepath = imagePath;
         File file = new File(imagePath);
         if (file.length() < 512 || !file.exists()) {
             code = Constans.PICTURE_ERROR;
@@ -364,15 +366,28 @@ public class SearchImpl {
 
                                                                                         @Override
                                                                                         public void onNext(ImgSearchEntity imgSearchEntity) {
-                                                                                            code = Constans.PICTURE_SUCCESS;
-                                                                                            switch (code) {
-                                                                                                case Constans.PICTURE_SUCCESS:
-                                                                                                    callbackListener.callback(Constans.PICTURE_SUCCESS, Constans.SEARCH_SUCCESS);
-                                                                                                    break;
-                                                                                                case Constans.PICTURE_ERROR:
-                                                                                                    callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
-                                                                                                    break;
+                                                                                            if (imgSearchEntity.getState()==0){
+                                                                                                code = Constans.PICTURE_SUCCESS;
+                                                                                                switch (code) {
+                                                                                                    case Constans.PICTURE_SUCCESS:
+                                                                                                        callbackListener.callback(Constans.PICTURE_SUCCESS, Constans.SEARCH_SUCCESS);
+                                                                                                        break;
+                                                                                                    case Constans.PICTURE_ERROR:
+                                                                                                        callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
+                                                                                                        break;
+                                                                                                }
+                                                                                                Bundle bundle = new Bundle();
+                                                                                                bundle.putParcelable("dy_result", imgSearchEntity);
+                                                                                                Intent intent = new Intent(mContext, SearchResultActivity
+                                                                                                        .class);
+                                                                                                intent.putExtras(bundle);
+                                                                                                intent.putExtra("bitmapUriPath", filepath);
+                                                                                                intent.putExtra("title", title);
+                                                                                                mContext.startActivity(intent);
+                                                                                            }else {
+                                                                                                callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
                                                                                             }
+
                                                                                         }
                                                                                     });
                                                                         }
