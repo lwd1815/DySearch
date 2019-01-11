@@ -74,8 +74,8 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
 
     private RelativeLayout dyrl;
 
-    private GridLayoutManager  layoutManager;
-    private DySearchAdapter adapter;
+    private GridLayoutManager layoutManager;
+    private DySearchAdapter   adapter;
 
     private Map<String, Object> normalParams;
     private Map<String, Object> extraParams;
@@ -139,11 +139,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         initcut();
         initRv();
         refresh();
-        if (mflag==2000){
-            initData();
-        }else if (mflag==2009){
-            cutRefresh();
-        }
+        initData();
 
     }
 
@@ -338,11 +334,12 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         }
         Intent intentImg = new Intent(this,  CutPhotoActivity.class);
         intentImg.putExtra("bitmapUriPath", searchImgPath);
+        intentImg.putExtra("input",2000);
         intentImg.putExtra("zuobiao", new float[] {
                 (float) (range.getX1() * 1.00 / 10000), (float) (range.getY1() * 1.00 / 10000),
                 (float) (range.getX2() * 1.00 / 10000), (float) (range.getY2() * 1.00 / 10000)
         });
-        startActivity(intentImg);
+        startActivityForResult(intentImg,CUTIMGCODE);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -352,10 +349,10 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                 int[] zuobiao = data.getIntArrayExtra("zuobiao");
                 if (zuobiao != null && zuobiao.length == 4) {
                     RangeEntity rangeEntity = new RangeEntity();
-                    rangeEntity.setY1(zuobiao[0]);
-                    rangeEntity.setX1(zuobiao[1]);
-                    rangeEntity.setY2(zuobiao[2]);
-                    rangeEntity.setX2(zuobiao[3]);
+                    rangeEntity.setX1(zuobiao[0]);
+                    rangeEntity.setY1(zuobiao[1]);
+                    rangeEntity.setX2(zuobiao[2]);
+                    rangeEntity.setY2(zuobiao[3]);
                     range = rangeEntity;
                     normalParams.put("picRange", range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
                     extraParams.clear();
@@ -375,28 +372,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         }
     }
 
-    public void cutRefresh() {
-        int[] zuobiao = getIntent().getIntArrayExtra("zuobiao");
-        if (zuobiao != null && zuobiao.length == 4) {
-            RangeEntity rangeEntity = new RangeEntity();
-            rangeEntity.setY1(zuobiao[0]);
-            rangeEntity.setX1(zuobiao[1]);
-            rangeEntity.setY2(zuobiao[2]);
-            rangeEntity.setX2(zuobiao[3]);
-            range = rangeEntity;
-            normalParams.put("picRange", range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
-            extraParams.clear();
-            normalParams.remove("category");
-            normalParams.remove("sex");
-            if (normalParams.containsKey("userBox")) {
-                normalParams.remove("userBox");
-            }
-            normalParams.put("userBox", 1);
-            showWaiting(true);
-            isFromCrop = true;
-            refreshData();
-        }
-    }
 
     @Override
     public void onSearch(String key) {

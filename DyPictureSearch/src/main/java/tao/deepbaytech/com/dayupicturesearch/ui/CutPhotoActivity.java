@@ -17,6 +17,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import tao.deepbaytech.com.dayupicturesearch.R;
 import tao.deepbaytech.com.dayupicturesearch.custom.MetaballView;
+import tao.deepbaytech.com.dayupicturesearch.net.SearchImpl;
 
 public class CutPhotoActivity extends AppCompatActivity {
     private Button        cutPhotoButtonFail;
@@ -35,6 +36,7 @@ public class CutPhotoActivity extends AppCompatActivity {
     private boolean fromXc = false;
     private boolean needCompress = false;
     private float[] nowZuobiao= null;
+    private int mInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class CutPhotoActivity extends AppCompatActivity {
     private void initView() {
         imagePath = getIntent().getStringExtra("bitmapUriPath");
         Log.w("imgPath",imagePath);
+        mInput = getIntent().getIntExtra("input", -1);
         nowZuobiao = getIntent().getFloatArrayExtra("zuobiao");
         if(imagePath.endsWith("-")){
             fromXc = true;
@@ -75,15 +78,30 @@ public class CutPhotoActivity extends AppCompatActivity {
         cutDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              ExeceptJump();
+                //正常2000
+                if (mInput==2000){
+                    NormalJump();
+                }else  if (mInput==2009){
+                    ExeceptJump();
+                }
+
             }
         });
     }
 
-    public void ExeceptJump(){
+    public void NormalJump(){
         Intent eIntent = Jump();
-        eIntent.putExtra("flag",2009);
-        CutPhotoActivity.this.startActivity(eIntent);
+        eIntent.putExtra("flag",2000);
+        CutPhotoActivity.this.setResult(110,eIntent);
+        CutPhotoActivity.this.finish();
+    }
+
+
+    public void ExeceptJump(){
+        Intent eIntent = Jumps();
+        eIntent.putExtra("flag",2000);
+        //CutPhotoActivity.this.startActivity(eIntent);
+        SearchImpl.getInstance().Exrequest(CutPhotoActivity.this,eIntent);
         CutPhotoActivity.this.finish();
     }
 
@@ -92,6 +110,20 @@ public class CutPhotoActivity extends AppCompatActivity {
         Rect rect = cropImageView.getCropRect();
         //回传坐标数据
         Intent intent = new Intent(CutPhotoActivity.this, SearchResultActivity.class);
+        intent.putExtra("bitmapUriPath", imagePath);
+        intent.putExtra("zuobiao",new int[]{(int) ((rect.left*1.0/imageWidth)*10000),(int) ((rect.top*1.0/imageHeight)*10000),
+                (int) ((rect.right * 1.0 / imageWidth) * 10000),
+                (int) ((rect.bottom * 1.0 / imageHeight) * 10000)
+        });
+
+        return intent;
+    }
+
+    public Intent Jumps(){
+        Rect rect = cropImageView.getCropRect();
+        //回传坐标数据
+        Intent intent = new Intent();
+        intent.putExtra("bitmapUriPath", imagePath);
         intent.putExtra("zuobiao",new int[]{(int) ((rect.left*1.0/imageWidth)*10000),(int) ((rect.top*1.0/imageHeight)*10000),
                 (int) ((rect.right * 1.0 / imageWidth) * 10000),
                 (int) ((rect.bottom * 1.0 / imageHeight) * 10000)

@@ -44,6 +44,7 @@ public class SearchImpl {
     private volatile static SearchImpl search;
 
 
+
     public static SearchImpl getInstance() {
         if (search == null) {
             synchronized (SearchImpl.class) {
@@ -161,6 +162,7 @@ public class SearchImpl {
                                                             range_up.setY1((int) (xSdz.getSulh() * 100));
                                                             range_up.setX2((int) (xSdz.getSdrw() * 100));
                                                             range_up.setY2((int) (xSdz.getSdrh() * 100));
+
                                                             range_trans.setX1((int) (xSdz.getSulh() * 100));
                                                             range_trans.setY1((int) (xSdz.getSulw() * 100));
                                                             range_trans.setX2((int) (xSdz.getSdrh() * 100));
@@ -235,8 +237,174 @@ public class SearchImpl {
                                                                                                 intent.putExtra("bitmapUriPath", filepath);
                                                                                                 intent.putExtra("title", title);
                                                                                                 mContext.startActivity(intent);
-                                                                                            }else {
+                                                                                            }else{
                                                                                                 callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
+                                                                                                goImgCut(mContext,filepath, range);
+                                                                                            }
+
+                                                                                        }
+                                                                                    });
+                                                                        }
+                                                                    });
+                                                        }
+
+                                                    });
+                                }
+                            }
+                        });
+
+    }
+
+
+
+
+
+    public void Exrequest(Context context, Intent intent) {
+        RangeEntity mRangeEntity=null;
+        this.mContext = context;
+        String imagePath=intent.getStringExtra("bitmapUriPath");
+        int[] zuobiao = intent.getIntArrayExtra("zuobiao");
+        if (zuobiao != null && zuobiao.length == 4) {
+            mRangeEntity = new RangeEntity();
+            mRangeEntity.setX1(zuobiao[0]);
+            mRangeEntity.setY1(zuobiao[1]);
+            mRangeEntity.setX2(zuobiao[2]);
+            mRangeEntity.setY2(zuobiao[3]);
+
+        } else {
+            code = Constans.PICTURE_ERROR;
+            mJumpListener.code(code);
+        }
+
+        File file = new File(imagePath);
+        if (file.length() < 512 || !file.exists()) {
+            code = Constans.PICTURE_ERROR;
+            mJumpListener.code(code);
+        }
+
+        if (file.length() > 300 * 1024) {
+            final RangeEntity finalMRangeEntity = mRangeEntity;
+            ImgCompress.zipImg(context, imagePath, new OnCompressListener() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(File mFile) {
+                    ExZipFilex(finalMRangeEntity,mFile);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            ExZipFilex(mRangeEntity,file);
+        }
+    }
+
+
+    private void ExZipFilex(final RangeEntity rangeEntity, File mfile) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), mfile);
+        MultipartBody.Part part =
+                MultipartBody.Part.createFormData("file", mfile.getName(), requestBody);
+
+        subscription = HttpSearch.getInstance()
+                .postImg("http://image-search.dayuyoupin.com/upimage", part,
+                        new Subscriber<BaseResponse>() {
+                            @Override
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                code = Constans.PICTURE_ERROR;
+                                mJumpListener.code(code);
+                            }
+
+                            @Override
+                            public void onNext(final BaseResponse baseResponse) {
+                                if (baseResponse.getState() == 0) {
+                                    if (subscription != null && subscription.isUnsubscribed()) {
+                                        subscription.unsubscribe();
+                                    }
+                                    subscription = HttpSearch.getInstance()
+                                            .postPreSearch("http://image-search.dayuyoupin.com/pre-search",
+                                                    baseResponse.getData().toString(), new Subscriber<XSdz>() {
+                                                        @Override
+                                                        public void onCompleted() {
+                                                        }
+
+                                                        @Override
+                                                        public void onError(Throwable e) {
+                                                            code = Constans.PICTURE_ERROR;
+                                                            mJumpListener.code(code);
+                                                        }
+
+                                                        @Override
+                                                        public void onNext(XSdz xSdz) {
+                                                            mEntity = new ImgSearchEntity();
+                                                            mEntity.setId(baseResponse.getData().toString());
+                                                            mEntity.setRange(rangeEntity);
+                                                            mEntity.setCategoryId(xSdz.getCate());
+                                                            mEntity.setAttribute(xSdz.getGender());
+
+                                                            Observable.just(mEntity)
+                                                                    .subscribeOn(Schedulers.io())
+                                                                    .observeOn(Schedulers.io())
+                                                                    .subscribe(new Action1<ImgSearchEntity>() {
+                                                                        @Override
+                                                                        public void call(ImgSearchEntity cropData) {
+                                                                            System.out.println(cropData.toString());
+                                                                            final Map<String, Object> normalParams = new HashMap<>();
+                                                                            normalParams.put("searchCode", cropData.getId());
+                                                                            final RangeEntity range = cropData.getRange();
+                                                                            normalParams.put("picRange", range.getX1()
+                                                                                    + ","
+                                                                                    + range.getY1()
+                                                                                    + ","
+                                                                                    + range.getX2()
+                                                                                    + ","
+                                                                                    + range.getY2());
+                                                                            normalParams.put("category", cropData.getCategoryId());
+                                                                            normalParams.put("sex", cropData.getAttribute());
+                                                                            normalParams.put("userBox", 0);
+
+                                                                            if (subscription != null && subscription.isUnsubscribed()) {
+                                                                                subscription.unsubscribe();
+                                                                            }
+                                                                            subscription = HttpSearch.getInstance()
+                                                                                    .postImgSeach(normalParams, new Subscriber<ImgSearchEntity>() {
+                                                                                        @Override
+                                                                                        public void onCompleted() {
+
+                                                                                        }
+
+                                                                                        @Override
+                                                                                        public void onError(Throwable e) {
+                                                                                            code = Constans.PICTURE_SUCCESS;
+                                                                                            mJumpListener.code(code);
+                                                                                        }
+
+                                                                                        @Override
+                                                                                        public void onNext(ImgSearchEntity imgSearchEntity) {
+                                                                                            if (imgSearchEntity.getState()==0){
+                                                                                                code = Constans.PICTURE_SUCCESS;
+                                                                                                mJumpListener.code(code);
+                                                                                                Bundle bundle = new Bundle();
+                                                                                                bundle.putParcelable("dy_result", imgSearchEntity);
+                                                                                                Intent intent = new Intent(mContext, SearchResultActivity
+                                                                                                        .class);
+                                                                                                intent.putExtras(bundle);
+                                                                                                intent.putExtra("flag",2000);
+                                                                                                intent.putExtra("bitmapUriPath", filepath);
+                                                                                                intent.putExtra("title", title);
+                                                                                                mContext.startActivity(intent);
+                                                                                            }else {
+                                                                                                code = Constans.PICTURE_ERROR;
+                                                                                                mJumpListener.code(code);
                                                                                                 goImgCut(mContext,filepath, range);
                                                                                             }
 
@@ -264,11 +432,21 @@ public class SearchImpl {
         }
         Intent intentImg = new Intent(context,  CutPhotoActivity.class);
         intentImg.putExtra("bitmapUriPath", searchImgPath);
+        intentImg.putExtra("input",2009);
         intentImg.putExtra("zuobiao", new float[] {
-                (float) (range.getY1() * 1.00 / 10000), (float) (range.getX1() * 1.00 / 10000),
-                (float) (range.getY2() * 1.00 / 10000), (float) (range.getX2() * 1.00 / 10000)
+                (float) (range.getX1() * 1.00 / 10000), (float) (range.getY1() * 1.00 / 10000),
+                (float) (range.getX2() * 1.00 / 10000), (float) (range.getY2() * 1.00 / 10000)
         });
         context.startActivity(intentImg);
     }
 
+    public interface JumpListener{
+        int code(int code);
+    }
+
+    JumpListener mJumpListener;
+
+    public void setJumpListener(JumpListener jumpListener) {
+        mJumpListener = jumpListener;
+    }
 }
