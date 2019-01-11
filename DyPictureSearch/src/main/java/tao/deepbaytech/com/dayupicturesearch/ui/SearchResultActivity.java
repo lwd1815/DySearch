@@ -92,6 +92,8 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
 
     private String         searchImgPath;
     private String mTitle;
+    private int mState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,13 +126,17 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         Bundle bundle = getIntent().getExtras();
         entity = (ImgSearchEntity) bundle.getParcelable("dy_result");
         mTitle = getIntent().getStringExtra("title");
+        mState = getIntent().getIntExtra("state",-1);
         if (mTitle==null||mTitle.isEmpty()){
             dytitle.setText(Constans.DEFAULTTITLE);
         }else {
             dytitle.setText(mTitle);
         }
-        initRv();
-        refresh();
+
+         initRv();
+         refresh();
+
+
     }
 
     private void refresh() {
@@ -229,8 +235,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         adapter.setNewData(normalData);
         normalParams.put("searchCode", entity.getId());
         range = entity.getRange();
-        normalParams.put("picRange",
-                range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
+        normalParams.put("picRange", range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
         normalParams.put("category", entity.getCategoryId());
         normalParams.put("sex", entity.getAttribute());
         normalParams.put("userBox", 0);
@@ -326,7 +331,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
             range.setX2(10000);
             range.setY2(10000);
         }
-        Intent intentImg = new Intent(this, CutPhotoActivity.class);
+        Intent intentImg = new Intent(this,  CutPhotoActivity.class);
         intentImg.putExtra("bitmapUriPath", searchImgPath);
         intentImg.putExtra("zuobiao", new float[] {
                 (float) (range.getY1() * 1.00 / 10000), (float) (range.getX1() * 1.00 / 10000),

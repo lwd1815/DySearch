@@ -57,16 +57,6 @@ public class DySearch {
 
 
     /**
-     * 无回调
-     *
-     * @param context
-     * @param imgPath
-     */
-    public void search(Context context, String imgPath) {
-        SearchImpl.getInstance().search(context, imgPath);
-    }
-
-    /**
      * 根据截图返回路径
      *
      * @param bfile
@@ -94,8 +84,11 @@ public class DySearch {
        SearchImpl.getInstance().getCode(context, imgPath,callbackListener);
     }
 
-    public void Jump(Context context, String imgPath) {
-        SearchImpl.getInstance().search(context, imgPath);
+
+    public void JumpCut(Context context,String imgPath){
+
+
     }
+
 
 }

@@ -81,8 +81,14 @@ public class Jump {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }else {
+            Intent intent=null;
              String jdWebStr_shop = url;
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(jdWebStr_shop));
+             if (jdWebStr_shop.contains("http")){
+                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(jdWebStr_shop));
+             }else {
+                  intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https:"+jdWebStr_shop));
+             }
+
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }

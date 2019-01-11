@@ -58,157 +58,6 @@ public class SearchImpl {
         this.title = title;
     }
 
-    public void search(Context context, final String imagePath) {
-        this.mContext = context;
-        this.filepath = imagePath;
-
-        File file = new File(imagePath);
-        if (file.length() < 512 || !file.exists()) {
-
-        }
-
-        if (file.length() > 300 * 1024) {
-            ImgCompress.zipImg(context, imagePath, new OnCompressListener() {
-                @Override
-                public void onStart() {
-
-                }
-
-                @Override
-                public void onSuccess(File mFile) {
-                    xxZipFile(mFile);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    e.printStackTrace();
-                }
-            });
-        } else {
-            xxZipFile(file);
-        }
-
-    }
-
-    private void xxZipFile(File mfile) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), mfile);
-        MultipartBody.Part part =
-                MultipartBody.Part.createFormData("file", mfile.getName(), requestBody);
-
-        subscription = HttpSearch.getInstance()
-                .postImg("http://image-search.dayuyoupin.com/upimage", part,
-                        new Subscriber<BaseResponse>() {
-                            @Override
-                            public void onCompleted() {
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(BaseResponse baseResponse) {
-                                if (baseResponse.getState() == 0) {
-                                    fdsvf(baseResponse.getData().toString());
-                                } else {
-
-                                }
-                            }
-                        });
-    }
-
-    private void fdsvf(final String s) {
-        if (subscription != null && subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        subscription = HttpSearch.getInstance()
-                .postPreSearch("http://image-search.dayuyoupin.com/pre-search", s, new Subscriber<XSdz>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(XSdz xSdz) {
-                        mEntity = new ImgSearchEntity();
-                        final RangeEntity range_trans = new RangeEntity();
-                        RangeEntity range_up = new RangeEntity();
-                        range_up.setX1((int) (xSdz.getSulw() * 100));
-                        range_up.setY1((int) (xSdz.getSulh() * 100));
-                        range_up.setX2((int) (xSdz.getSdrw() * 100));
-                        range_up.setY2((int) (xSdz.getSdrh() * 100));
-                        range_trans.setX1((int) (xSdz.getSulh() * 100));
-                        range_trans.setY1((int) (xSdz.getSulw() * 100));
-                        range_trans.setX2((int) (xSdz.getSdrh() * 100));
-                        range_trans.setY2((int) (xSdz.getSdrw() * 100));
-                        mEntity.setId(s);
-                        mEntity.setRange(range_trans);
-                        mEntity.setCategoryId(xSdz.getCate());
-                        mEntity.setAttribute(xSdz.getGender());
-
-                        Observable.just(mEntity)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(Schedulers.io())
-                                .subscribe(new Action1<ImgSearchEntity>() {
-                                    @Override
-                                    public void call(ImgSearchEntity cropData) {
-                                        System.out.println(cropData.toString());
-                                        final Map<String, Object> normalParams = new HashMap<>();
-                                        normalParams.put("searchCode", cropData.getId());
-                                        final RangeEntity range = cropData.getRange();
-                                        normalParams.put("picRange", range.getX1()
-                                                + ","
-                                                + range.getY1()
-                                                + ","
-                                                + range.getX2()
-                                                + ","
-                                                + range.getY2());
-                                        normalParams.put("category", cropData.getCategoryId());
-                                        normalParams.put("sex", cropData.getAttribute());
-                                        normalParams.put("userBox", 0);
-
-                                        if (subscription != null && subscription.isUnsubscribed()) {
-                                            subscription.unsubscribe();
-                                        }
-                                        subscription = HttpSearch.getInstance()
-                                                .postImgSeach(normalParams, new Subscriber<ImgSearchEntity>() {
-                                                    @Override
-                                                    public void onCompleted() {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onError(Throwable e) {
-                                                        //RxBus.getDefault().postSticky(new ImgDataEvent
-                                                        // (normalParams, false));
-                                                    }
-
-                                                    @Override
-                                                    public void onNext(ImgSearchEntity imgSearchEntity) {
-                                                        System.out.println(imgSearchEntity.toString());
-                                                        if (imgSearchEntity.getState() == 0) {
-                                                            Bundle bundle = new Bundle();
-                                                            bundle.putParcelable("dy_result", imgSearchEntity);
-                                                            Intent intent = new Intent(mContext, SearchResultActivity
-                                                                    .class);
-                                                            intent.putExtras(bundle);
-                                                            intent.putExtra("bitmapUriPath", filepath);
-                                                            intent.putExtra("title", title);
-                                                            mContext.startActivity(intent);
-                                                        } else {
-                                                        }
-                                                    }
-                                                });
-                                    }
-                                });
-                    }
-                });
-    }
 
 
     public void getCode(Context context, final String imagePath,final DySearchCallbackListener<String> callbackListener) {
@@ -381,6 +230,7 @@ public class SearchImpl {
                                                                                                 Intent intent = new Intent(mContext, SearchResultActivity
                                                                                                         .class);
                                                                                                 intent.putExtras(bundle);
+                                                                                                intent.putExtra("state",0);
                                                                                                 intent.putExtra("bitmapUriPath", filepath);
                                                                                                 intent.putExtra("title", title);
                                                                                                 mContext.startActivity(intent);
@@ -398,5 +248,6 @@ public class SearchImpl {
                                 }
                             }
                         });
+
     }
 }
