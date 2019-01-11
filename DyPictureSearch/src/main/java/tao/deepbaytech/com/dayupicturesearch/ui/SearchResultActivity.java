@@ -92,7 +92,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
 
     private String         searchImgPath;
     private String mTitle;
-    private int mState;
+    private int mflag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,18 +126,46 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         Bundle bundle = getIntent().getExtras();
         entity = (ImgSearchEntity) bundle.getParcelable("dy_result");
         mTitle = getIntent().getStringExtra("title");
-        mState = getIntent().getIntExtra("state",-1);
+        mflag = getIntent().getIntExtra("flag",-1);
         if (mTitle==null||mTitle.isEmpty()){
             dytitle.setText(Constans.DEFAULTTITLE);
         }else {
             dytitle.setText(mTitle);
         }
 
-         initRv();
-         refresh();
-
+        //进入searchresultActivity的方式分两种
+        //1 正常流程进入 flag=2000
+        //2 裁剪后进入   flag==2009
+        initcut();
+        initRv();
+        refresh();
+        if (mflag==2000){
+            initData();
+        }else if (mflag==2009){
+            cutRefresh();
+        }
 
     }
+
+
+    private void initData() {
+        initClassRadio(entity.getCategoryItems(), entity.getCategoryId());
+        List<ProductItemBean> wareList = entity.getProductItems();
+        for (ProductItemBean bean : wareList) {
+            normalData.add(
+                    new ImgMultipleItem(ImgMultipleItem.WARE, ImgMultipleItem.WARE_SPAN_SIZE,
+                            bean));
+        }
+        adapter.setNewData(normalData);
+        normalParams.put("searchCode", entity.getId());
+        range = entity.getRange();
+        normalParams.put("picRange", range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
+        normalParams.put("category", entity.getCategoryId());
+        normalParams.put("sex", entity.getAttribute());
+        normalParams.put("userBox", 0);
+    }
+
+
 
     private void refresh() {
         dysmart.setRefreshHeader(new ClassicsHeader(this));
@@ -191,7 +219,6 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                                     new ImgMultipleItem(ImgMultipleItem.WARE, ImgMultipleItem.WARE_SPAN_SIZE, bean));
                         }
                         adapter.setNewData(normalData);
-                        //text search ,category 可能会变
                         normalParams.put("category", entity.getCategoryId());
                     }
                 });
@@ -205,40 +232,18 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
     private void initRv() {
         adapter = new DySearchAdapter(null);
         adapter.setSearchListener(this);
-
         DeeHeaderAdapter deeHeaderAdapter = new DeeHeaderAdapter(adapter);
-        DeeHeaderGridLayoutManager gridLayoutManager =
-                new DeeHeaderGridLayoutManager(this, 2, deeHeaderAdapter);
+        DeeHeaderGridLayoutManager gridLayoutManager = new DeeHeaderGridLayoutManager(this, 2, deeHeaderAdapter);
         dyrv.setHasFixedSize(true);
         dyrv.addItemDecoration(new DeeHeaderGridDivider(this, 0));
         dyrv.setLayoutManager(gridLayoutManager);
         dyrv.addItemDecoration(new DeeHeaderGridDivider(this, 0));
         dyrv.setAdapter(adapter);
-
-        initData();
-        initcut();
     }
 
     private void initcut() {
         searchImgPath = getIntent().getStringExtra("bitmapUriPath");
         Glide.with(this).load(searchImgPath).into(dycorp);
-    }
-
-    private void initData() {
-        initClassRadio(entity.getCategoryItems(), entity.getCategoryId());
-        List<ProductItemBean> wareList = entity.getProductItems();
-        for (ProductItemBean bean : wareList) {
-            normalData.add(
-                    new ImgMultipleItem(ImgMultipleItem.WARE, ImgMultipleItem.WARE_SPAN_SIZE,
-                            bean));
-        }
-        adapter.setNewData(normalData);
-        normalParams.put("searchCode", entity.getId());
-        range = entity.getRange();
-        normalParams.put("picRange", range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
-        normalParams.put("category", entity.getCategoryId());
-        normalParams.put("sex", entity.getAttribute());
-        normalParams.put("userBox", 0);
     }
 
     private void initclick() {
@@ -337,7 +342,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                 (float) (range.getY1() * 1.00 / 10000), (float) (range.getX1() * 1.00 / 10000),
                 (float) (range.getY2() * 1.00 / 10000), (float) (range.getX2() * 1.00 / 10000)
         });
-        startActivityForResult(intentImg, CUTIMGCODE);
+        startActivity(intentImg);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -352,8 +357,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                     rangeEntity.setY2(zuobiao[2]);
                     rangeEntity.setX2(zuobiao[3]);
                     range = rangeEntity;
-                    normalParams.put("picRange",
-                            range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
+                    normalParams.put("picRange", range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
                     extraParams.clear();
                     normalParams.remove("category");
                     normalParams.remove("sex");
@@ -370,6 +374,30 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
             }
         }
     }
+
+    public void cutRefresh() {
+        int[] zuobiao = getIntent().getIntArrayExtra("zuobiao");
+        if (zuobiao != null && zuobiao.length == 4) {
+            RangeEntity rangeEntity = new RangeEntity();
+            rangeEntity.setY1(zuobiao[0]);
+            rangeEntity.setX1(zuobiao[1]);
+            rangeEntity.setY2(zuobiao[2]);
+            rangeEntity.setX2(zuobiao[3]);
+            range = rangeEntity;
+            normalParams.put("picRange", range.getX1() + "," + range.getY1() + "," + range.getX2() + "," + range.getY2());
+            extraParams.clear();
+            normalParams.remove("category");
+            normalParams.remove("sex");
+            if (normalParams.containsKey("userBox")) {
+                normalParams.remove("userBox");
+            }
+            normalParams.put("userBox", 1);
+            showWaiting(true);
+            isFromCrop = true;
+            refreshData();
+        }
+    }
+
     @Override
     public void onSearch(String key) {
 

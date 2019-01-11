@@ -35,6 +35,7 @@ public class CutPhotoActivity extends AppCompatActivity {
     private boolean fromXc = false;
     private boolean needCompress = false;
     private float[] nowZuobiao= null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +48,13 @@ public class CutPhotoActivity extends AppCompatActivity {
         cutBack = (TextView) findViewById(R.id.dy_cut_back);
         cutDone = (RelativeLayout) findViewById(R.id.dy_cut_done);
 
+        initView();
         initdata();
         setImage();
     }
 
-    private void initdata() {
+    //进入裁剪页只有一种状态2001
+    private void initView() {
         imagePath = getIntent().getStringExtra("bitmapUriPath");
         Log.w("imgPath",imagePath);
         nowZuobiao = getIntent().getFloatArrayExtra("zuobiao");
@@ -60,28 +63,41 @@ public class CutPhotoActivity extends AppCompatActivity {
             imagePath = imagePath.substring(0,imagePath.length()-1);
         }
 
-        cutDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Rect rect = cropImageView.getCropRect();
-                //回传坐标数据
-                Intent intent = new Intent(CutPhotoActivity.this, SearchResultActivity.class);
-                intent.putExtra("zuobiao",new int[]{(int) ((rect.left*1.0/imageWidth)*10000),(int) ((rect.top*1.0/imageHeight)*10000),
-                        (int) ((rect.right * 1.0 / imageWidth) * 10000),
-                        (int) ((rect.bottom * 1.0 / imageHeight) * 10000)
-                });
-                CutPhotoActivity.this.setResult(110,intent);
-                CutPhotoActivity.this.finish();
-
-            }
-        });
-
         cutBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+    }
+
+    private void initdata() {
+        cutDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              ExeceptJump();
+            }
+        });
+    }
+
+    public void ExeceptJump(){
+        Intent eIntent = Jump();
+        eIntent.putExtra("flag",2009);
+        CutPhotoActivity.this.startActivity(eIntent);
+        CutPhotoActivity.this.finish();
+    }
+
+
+    public Intent Jump(){
+        Rect rect = cropImageView.getCropRect();
+        //回传坐标数据
+        Intent intent = new Intent(CutPhotoActivity.this, SearchResultActivity.class);
+        intent.putExtra("zuobiao",new int[]{(int) ((rect.left*1.0/imageWidth)*10000),(int) ((rect.top*1.0/imageHeight)*10000),
+                (int) ((rect.right * 1.0 / imageWidth) * 10000),
+                (int) ((rect.bottom * 1.0 / imageHeight) * 10000)
+        });
+
+        return intent;
     }
 
     private void getImageWidthAndHeight(String imagePath){

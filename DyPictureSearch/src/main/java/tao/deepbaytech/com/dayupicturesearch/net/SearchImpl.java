@@ -23,6 +23,7 @@ import tao.deepbaytech.com.dayupicturesearch.entity.BaseResponse;
 import tao.deepbaytech.com.dayupicturesearch.entity.ImgSearchEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.RangeEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.XSdz;
+import tao.deepbaytech.com.dayupicturesearch.ui.CutPhotoActivity;
 import tao.deepbaytech.com.dayupicturesearch.ui.SearchResultActivity;
 import top.zibin.luban.OnCompressListener;
 
@@ -230,12 +231,13 @@ public class SearchImpl {
                                                                                                 Intent intent = new Intent(mContext, SearchResultActivity
                                                                                                         .class);
                                                                                                 intent.putExtras(bundle);
-                                                                                                intent.putExtra("state",0);
+                                                                                                intent.putExtra("flag",2000);
                                                                                                 intent.putExtra("bitmapUriPath", filepath);
                                                                                                 intent.putExtra("title", title);
                                                                                                 mContext.startActivity(intent);
                                                                                             }else {
                                                                                                 callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
+                                                                                                goImgCut(mContext,filepath, range);
                                                                                             }
 
                                                                                         }
@@ -250,4 +252,23 @@ public class SearchImpl {
                         });
 
     }
+
+
+    private void goImgCut(Context context,String searchImgPath,RangeEntity range) {
+        if (range == null) {
+            range = new RangeEntity();
+            range.setX1(0);
+            range.setY1(0);
+            range.setX2(10000);
+            range.setY2(10000);
+        }
+        Intent intentImg = new Intent(context,  CutPhotoActivity.class);
+        intentImg.putExtra("bitmapUriPath", searchImgPath);
+        intentImg.putExtra("zuobiao", new float[] {
+                (float) (range.getY1() * 1.00 / 10000), (float) (range.getX1() * 1.00 / 10000),
+                (float) (range.getY2() * 1.00 / 10000), (float) (range.getX2() * 1.00 / 10000)
+        });
+        context.startActivity(intentImg);
+    }
+
 }
