@@ -166,7 +166,7 @@ public class SearchImpl {
                                                             range_trans.setX2((int) (xSdz.getSdrh() * 100));
                                                             range_trans.setY2((int) (xSdz.getSdrw() * 100));
                                                             mEntity.setId(baseResponse.getData().toString());
-                                                            mEntity.setRange(range_trans);
+                                                            mEntity.setRange(range_up);
                                                             mEntity.setCategoryId(xSdz.getCate());
                                                             mEntity.setAttribute(xSdz.getGender());
 

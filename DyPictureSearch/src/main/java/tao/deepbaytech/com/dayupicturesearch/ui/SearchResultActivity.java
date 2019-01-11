@@ -339,8 +339,8 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         Intent intentImg = new Intent(this,  CutPhotoActivity.class);
         intentImg.putExtra("bitmapUriPath", searchImgPath);
         intentImg.putExtra("zuobiao", new float[] {
-                (float) (range.getY1() * 1.00 / 10000), (float) (range.getX1() * 1.00 / 10000),
-                (float) (range.getY2() * 1.00 / 10000), (float) (range.getX2() * 1.00 / 10000)
+                (float) (range.getX1() * 1.00 / 10000), (float) (range.getY1() * 1.00 / 10000),
+                (float) (range.getX2() * 1.00 / 10000), (float) (range.getY2() * 1.00 / 10000)
         });
         startActivity(intentImg);
     }
