@@ -230,7 +230,6 @@ public class SearchImpl {
                                                                                         @Override
                                                                                         public void onNext(ImgSearchEntity imgSearchEntity) {
                                                                                             if (imgSearchEntity.getState()==0){
-                                                                                                System.out.println("00000000000000000000000");
                                                                                                 code = Constans.PICTURE_SUCCESS;
                                                                                                 switch (code) {
                                                                                                     case Constans.PICTURE_SUCCESS:
@@ -250,7 +249,6 @@ public class SearchImpl {
                                                                                                 intent.putExtra("title", title);
                                                                                                 mContext.startActivity(intent);
                                                                                             }else{
-                                                                                                System.out.println("111111111111111111111111");
                                                                                                 callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
                                                                                                 goImgCut(mContext,filepath, range);
                                                                                             }
