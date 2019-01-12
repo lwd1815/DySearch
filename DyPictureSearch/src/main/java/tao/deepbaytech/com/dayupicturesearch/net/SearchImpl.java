@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -22,7 +23,7 @@ import tao.deepbaytech.com.dayupicturesearch.custom.ImgCompress;
 import tao.deepbaytech.com.dayupicturesearch.entity.BaseResponse;
 import tao.deepbaytech.com.dayupicturesearch.entity.ImgSearchEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.RangeEntity;
-import tao.deepbaytech.com.dayupicturesearch.entity.XSdz;
+import tao.deepbaytech.com.dayupicturesearch.entity.SDXA;
 import tao.deepbaytech.com.dayupicturesearch.ui.CutPhotoActivity;
 import tao.deepbaytech.com.dayupicturesearch.ui.SearchResultActivity;
 import top.zibin.luban.OnCompressListener;
@@ -133,8 +134,8 @@ public class SearchImpl {
                                         subscription.unsubscribe();
                                     }
                                     subscription = HttpSearch.getInstance()
-                                            .postPreSearch("http://image-search.dayuyoupin.com/pre-search",
-                                                    baseResponse.getData().toString(), new Subscriber<XSdz>() {
+                                            .postPreSearch("http://image-search.dayuyoupin.com/pre-multibox",
+                                                    baseResponse.getData().toString(), new Subscriber<List<SDXA>>() {
                                                         @Override
                                                         public void onCompleted() {
                                                         }
@@ -153,24 +154,33 @@ public class SearchImpl {
                                                         }
 
                                                         @Override
-                                                        public void onNext(XSdz xSdz) {
-
+                                                        public void onNext(List<SDXA> xSdz) {
+                                                            if (xSdz.size()==0){
+                                                                RangeEntity range = new RangeEntity();
+                                                                range.setX1(0);
+                                                                range.setY1(0);
+                                                                range.setX2(10000);
+                                                                range.setY2(10000);
+                                                                callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
+                                                                goImgCut(mContext,filepath, range);
+                                                                return;
+                                                            }
                                                             mEntity = new ImgSearchEntity();
                                                             final RangeEntity range_trans = new RangeEntity();
                                                             RangeEntity range_up = new RangeEntity();
-                                                            range_up.setX1((int) (xSdz.getSulw() * 100));
-                                                            range_up.setY1((int) (xSdz.getSulh() * 100));
-                                                            range_up.setX2((int) (xSdz.getSdrw() * 100));
-                                                            range_up.setY2((int) (xSdz.getSdrh() * 100));
+                                                            range_up.setX1((int) (xSdz.get(0).getSulw() * 100));
+                                                            range_up.setY1((int) (xSdz.get(0).getSulh() * 100));
+                                                            range_up.setX2((int) (xSdz.get(0).getSdrw() * 100));
+                                                            range_up.setY2((int) (xSdz.get(0).getSdrh() * 100));
 
-                                                            range_trans.setX1((int) (xSdz.getSulh() * 100));
-                                                            range_trans.setY1((int) (xSdz.getSulw() * 100));
-                                                            range_trans.setX2((int) (xSdz.getSdrh() * 100));
-                                                            range_trans.setY2((int) (xSdz.getSdrw() * 100));
+                                                            range_trans.setX1((int) (xSdz.get(0).getSulh() * 100));
+                                                            range_trans.setY1((int) (xSdz.get(0).getSulw() * 100));
+                                                            range_trans.setX2((int) (xSdz.get(0).getSdrh() * 100));
+                                                            range_trans.setY2((int) (xSdz.get(0).getSdrw() * 100));
                                                             mEntity.setId(baseResponse.getData().toString());
                                                             mEntity.setRange(range_up);
-                                                            mEntity.setCategoryId(xSdz.getCate());
-                                                            mEntity.setAttribute(xSdz.getGender());
+                                                            mEntity.setCategoryId(xSdz.get(0).getCate());
+                                                            mEntity.setAttribute(xSdz.get(0).getGender());
 
                                                             Observable.just(mEntity)
                                                                     .subscribeOn(Schedulers.io())
@@ -214,11 +224,13 @@ public class SearchImpl {
                                                                                                     callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
                                                                                                     break;
                                                                                             }
+                                                                                            goImgCut(mContext,filepath, range);
                                                                                         }
 
                                                                                         @Override
                                                                                         public void onNext(ImgSearchEntity imgSearchEntity) {
                                                                                             if (imgSearchEntity.getState()==0){
+                                                                                                System.out.println("00000000000000000000000");
                                                                                                 code = Constans.PICTURE_SUCCESS;
                                                                                                 switch (code) {
                                                                                                     case Constans.PICTURE_SUCCESS:
@@ -238,6 +250,7 @@ public class SearchImpl {
                                                                                                 intent.putExtra("title", title);
                                                                                                 mContext.startActivity(intent);
                                                                                             }else{
+                                                                                                System.out.println("111111111111111111111111");
                                                                                                 callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
                                                                                                 goImgCut(mContext,filepath, range);
                                                                                             }
@@ -331,8 +344,8 @@ public class SearchImpl {
                                         subscription.unsubscribe();
                                     }
                                     subscription = HttpSearch.getInstance()
-                                            .postPreSearch("http://image-search.dayuyoupin.com/pre-search",
-                                                    baseResponse.getData().toString(), new Subscriber<XSdz>() {
+                                            .postPreSearch("http://image-search.dayuyoupin.com/pre-multibox",
+                                                    baseResponse.getData().toString(), new Subscriber<List<SDXA>>() {
                                                         @Override
                                                         public void onCompleted() {
                                                         }
@@ -344,13 +357,24 @@ public class SearchImpl {
                                                         }
 
                                                         @Override
-                                                        public void onNext(XSdz xSdz) {
+                                                        public void onNext(List<SDXA> xSdz) {
+
+                                                            if (xSdz.size()==0){
+                                                                RangeEntity range = new RangeEntity();
+                                                                range.setX1(0);
+                                                                range.setY1(0);
+                                                                range.setX2(10000);
+                                                                range.setY2(10000);
+                                                                code = Constans.PICTURE_ERROR;
+                                                                mJumpListener.code(code);
+                                                                goImgCut(mContext,filepath, range);
+                                                                return;
+                                                            }
                                                             mEntity = new ImgSearchEntity();
                                                             mEntity.setId(baseResponse.getData().toString());
                                                             mEntity.setRange(rangeEntity);
-                                                            mEntity.setCategoryId(xSdz.getCate());
-                                                            mEntity.setAttribute(xSdz.getGender());
-
+                                                            mEntity.setCategoryId(xSdz.get(0).getCate());
+                                                            mEntity.setAttribute(xSdz.get(0).getGender());
                                                             Observable.just(mEntity)
                                                                     .subscribeOn(Schedulers.io())
                                                                     .observeOn(Schedulers.io())
@@ -384,8 +408,9 @@ public class SearchImpl {
 
                                                                                         @Override
                                                                                         public void onError(Throwable e) {
-                                                                                            code = Constans.PICTURE_SUCCESS;
+                                                                                            code = Constans.PICTURE_ERROR;
                                                                                             mJumpListener.code(code);
+                                                                                            goImgCut(mContext,filepath, range);
                                                                                         }
 
                                                                                         @Override

@@ -1,6 +1,7 @@
 package tao.deepbaytech.com.dayupicturesearch.net;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +20,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import tao.deepbaytech.com.dayupicturesearch.entity.BaseResponse;
 import tao.deepbaytech.com.dayupicturesearch.entity.ImgSearchEntity;
-import tao.deepbaytech.com.dayupicturesearch.entity.XSdz;
+import tao.deepbaytech.com.dayupicturesearch.entity.SDXA;
 import tao.deepbaytech.com.dayupicturesearch.net.fastadapter.FastJsonConverterFactory;
 
 /**
@@ -99,7 +100,7 @@ public class HttpSearch {
         return changeThread(homeVisitorApi.postImgSearch(file, time), subscriber);
     }
 
-    public Subscription postPreSearch(String url, String tfsid, Subscriber<XSdz> subscriber) {
+    public Subscription postPreSearch(String url, String tfsid, Subscriber<List<SDXA>> subscriber) {
         return changeThread(homeVisitorApi.postPreSearch(url, tfsid), subscriber);
     }
 }

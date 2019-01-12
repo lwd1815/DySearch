@@ -1,5 +1,6 @@
 package tao.deepbaytech.com.dayupicturesearch.net;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -14,7 +15,7 @@ import retrofit2.http.Url;
 import rx.Observable;
 import tao.deepbaytech.com.dayupicturesearch.entity.BaseResponse;
 import tao.deepbaytech.com.dayupicturesearch.entity.ImgSearchEntity;
-import tao.deepbaytech.com.dayupicturesearch.entity.XSdz;
+import tao.deepbaytech.com.dayupicturesearch.entity.SDXA;
 
 /**
  * @author IT烟酒僧
@@ -35,7 +36,7 @@ public interface ApiNet {
             @Part MultipartBody.Part file ,@Query("nowTime")long nowTime);
 
     @FormUrlEncoded
-    @POST() Observable<XSdz> postPreSearch(
+    @POST() Observable<List<SDXA>> postPreSearch(
             @Url String url,
             @Field("tfsid") String tfsid);
 }
