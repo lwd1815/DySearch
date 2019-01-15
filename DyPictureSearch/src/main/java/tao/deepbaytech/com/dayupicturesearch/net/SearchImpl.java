@@ -163,7 +163,6 @@ public class SearchImpl {
                                                                 range.setY2(10000);
                                                                 callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
                                                                 goImgCut(mContext,mfile, range,name);
-                                                                System.out.println("路径==="+mfile+"==="+name);
                                                                 return;
                                                             }
                                                             mEntity = new ImgSearchEntity();
@@ -385,7 +384,6 @@ public class SearchImpl {
             range.setX2(10000);
             range.setY2(10000);
         }
-        System.out.println("路径1==="+searchImgPath+"==="+ivname);
         Intent intentImg = new Intent(context,  CutPhotoActivity.class);
         intentImg.putExtra("bitmapUriPath", searchImgPath);
         intentImg.putExtra("input",2009);

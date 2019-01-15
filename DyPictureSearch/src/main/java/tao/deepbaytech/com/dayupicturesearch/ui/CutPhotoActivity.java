@@ -63,7 +63,6 @@ public class CutPhotoActivity extends AppCompatActivity {
         mInput = getIntent().getIntExtra("input", -1);
         nowZuobiao = getIntent().getFloatArrayExtra("zuobiao");
         mName = getIntent().getStringExtra("name");
-        System.out.println("路径2==="+imagePath+"==="+mName);
         if(imagePath.endsWith("-")){
             fromXc = true;
             imagePath = imagePath.substring(0,imagePath.length()-1);
