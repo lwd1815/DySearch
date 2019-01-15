@@ -4,14 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -19,14 +15,11 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import tao.deepbaytech.com.dayupicturesearch.call.callback.DySearchCallbackListener;
 import tao.deepbaytech.com.dayupicturesearch.config.Constans;
-import tao.deepbaytech.com.dayupicturesearch.custom.ImgCompress;
-import tao.deepbaytech.com.dayupicturesearch.entity.BaseResponse;
 import tao.deepbaytech.com.dayupicturesearch.entity.ImgSearchEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.RangeEntity;
 import tao.deepbaytech.com.dayupicturesearch.entity.SDXA;
 import tao.deepbaytech.com.dayupicturesearch.ui.CutPhotoActivity;
 import tao.deepbaytech.com.dayupicturesearch.ui.SearchResultActivity;
-import top.zibin.luban.OnCompressListener;
 
 /**
  * @author IT烟酒僧
@@ -40,7 +33,7 @@ public class SearchImpl {
     private ImgSearchEntity mEntity;
     private String          title;
     private Context         mContext;
-    private String          filepath;
+    private String          filename;
     int code = -1;
     private volatile static SearchImpl search;
 
@@ -63,79 +56,86 @@ public class SearchImpl {
 
 
 
-    public void getCode(Context context, final String imagePath,final DySearchCallbackListener<String> callbackListener) {
+    public void getCode(Context context,final String local ,final String imagePath,final DySearchCallbackListener<String> callbackListener) {
         this.mContext = context;
-        this.filepath = imagePath;
-        File file = new File(imagePath);
-        if (file.length() < 512 || !file.exists()) {
-            code = Constans.PICTURE_ERROR;
-            switch (code) {
-                case Constans.PICTURE_SUCCESS:
-                    callbackListener.callback(Constans.PICTURE_SUCCESS, Constans.SEARCH_SUCCESS);
-                    break;
-                case Constans.PICTURE_ERROR:
-                    callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
-                    break;
-            }
+
+
+        String[] split = imagePath.split("/");
+        for (int i = 0; i < split.length; i++) {
+            System.out.println("s==="+split[split.length-1]);
+            this.filename =split[split.length-1];
         }
 
-        if (file.length() > 300 * 1024) {
-            ImgCompress.zipImg(context, imagePath, new OnCompressListener() {
-                @Override
-                public void onStart() {
-
-                }
-
-                @Override
-                public void onSuccess(File mFile) {
-                    xxZipFilex(mFile,callbackListener);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    e.printStackTrace();
-                }
-            });
-        } else {
-            xxZipFilex(file,callbackListener);
-        }
+//        File file = new File(imagePath);
+//        if (file.length() < 512 || !file.exists()) {
+//            code = Constans.PICTURE_ERROR;
+//            switch (code) {
+//                case Constans.PICTURE_SUCCESS:
+//                    callbackListener.callback(Constans.PICTURE_SUCCESS, Constans.SEARCH_SUCCESS);
+//                    break;
+//                case Constans.PICTURE_ERROR:
+//                    callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
+//                    break;
+//            }
+//        }
+//
+//        if (file.length() > 300 * 1024) {
+//            ImgCompress.zipImg(context, imagePath, new OnCompressListener() {
+//                @Override
+//                public void onStart() {
+//
+//                }
+//
+//                @Override
+//                public void onSuccess(File mFile) {
+//                    xxZipFilex(mFile,callbackListener);
+//                }
+//
+//                @Override
+//                public void onError(Throwable e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        } else {
+            xxZipFilex(local,filename,callbackListener);
+       // }
     }
 
 
-    private void xxZipFilex(File mfile,final DySearchCallbackListener<String> callbackListener) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), mfile);
-        MultipartBody.Part part =
-                MultipartBody.Part.createFormData("file", mfile.getName(), requestBody);
-
-        subscription = HttpSearch.getInstance()
-                .postImg("http://image-search.dayuyoupin.com/upimage", part,
-                        new Subscriber<BaseResponse>() {
-                            @Override
-                            public void onCompleted() {
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                code = Constans.PICTURE_ERROR;
-                                switch (code) {
-                                    case Constans.PICTURE_SUCCESS:
-                                        callbackListener.callback(Constans.PICTURE_SUCCESS, Constans.SEARCH_SUCCESS);
-                                        break;
-                                    case Constans.PICTURE_ERROR:
-                                        callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
-                                        break;
-                                }
-                            }
-
-                            @Override
-                            public void onNext(final BaseResponse baseResponse) {
-                                if (baseResponse.getState() == 0) {
+    private void xxZipFilex(final String mfile,final String name, final DySearchCallbackListener<String> callbackListener) {
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), mfile);
+//        MultipartBody.Part part =
+//                MultipartBody.Part.createFormData("file", mfile.getName(), requestBody);
+//
+//        subscription = HttpSearch.getInstance()
+//                .postImg("http://image-search.dayuyoupin.com/upimage", part,
+//                        new Subscriber<BaseResponse>() {
+//                            @Override
+//                            public void onCompleted() {
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                code = Constans.PICTURE_ERROR;
+//                                switch (code) {
+//                                    case Constans.PICTURE_SUCCESS:
+//                                        callbackListener.callback(Constans.PICTURE_SUCCESS, Constans.SEARCH_SUCCESS);
+//                                        break;
+//                                    case Constans.PICTURE_ERROR:
+//                                        callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
+//                                        break;
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onNext(final BaseResponse baseResponse) {
+                                //if (baseResponse.getState() == 0) {
                                     if (subscription != null && subscription.isUnsubscribed()) {
                                         subscription.unsubscribe();
                                     }
                                     subscription = HttpSearch.getInstance()
                                             .postPreSearch("http://image-search.dayuyoupin.com/pre-multibox",
-                                                    baseResponse.getData().toString(), new Subscriber<List<SDXA>>() {
+                                                    name, new Subscriber<List<SDXA>>() {
                                                         @Override
                                                         public void onCompleted() {
                                                         }
@@ -162,7 +162,8 @@ public class SearchImpl {
                                                                 range.setX2(10000);
                                                                 range.setY2(10000);
                                                                 callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
-                                                                goImgCut(mContext,filepath, range,baseResponse.getData().toString());
+                                                                goImgCut(mContext,mfile, range,name);
+                                                                System.out.println("路径==="+mfile+"==="+name);
                                                                 return;
                                                             }
                                                             mEntity = new ImgSearchEntity();
@@ -177,7 +178,7 @@ public class SearchImpl {
                                                             range_trans.setY1((int) (xSdz.get(0).getSulw() * 100));
                                                             range_trans.setX2((int) (xSdz.get(0).getSdrh() * 100));
                                                             range_trans.setY2((int) (xSdz.get(0).getSdrw() * 100));
-                                                            mEntity.setId(baseResponse.getData().toString());
+                                                            mEntity.setId(name);
                                                             mEntity.setRange(range_up);
                                                             mEntity.setCategoryId(xSdz.get(0).getCate());
                                                             mEntity.setAttribute(xSdz.get(0).getGender());
@@ -224,7 +225,7 @@ public class SearchImpl {
                                                                                                     callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
                                                                                                     break;
                                                                                             }
-                                                                                            goImgCut(mContext,filepath, range,baseResponse.getData().toString());
+                                                                                            goImgCut(mContext,mfile, range,name);
                                                                                         }
 
                                                                                         @Override
@@ -245,12 +246,12 @@ public class SearchImpl {
                                                                                                         .class);
                                                                                                 intent.putExtras(bundle);
                                                                                                 intent.putExtra("flag",2000);
-                                                                                                intent.putExtra("bitmapUriPath", filepath);
+                                                                                                intent.putExtra("bitmapUriPath", mfile);
                                                                                                 intent.putExtra("title", title);
                                                                                                 mContext.startActivity(intent);
                                                                                             }else{
                                                                                                 callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
-                                                                                                goImgCut(mContext,filepath, range,baseResponse.getData().toString());
+                                                                                                goImgCut(mContext,mfile, range,name);
                                                                                             }
 
                                                                                         }
@@ -260,9 +261,9 @@ public class SearchImpl {
                                                         }
 
                                                     });
-                                }
-                            }
-                        });
+                               // }
+                           // }
+                        //});
 
     }
 
@@ -288,37 +289,37 @@ public class SearchImpl {
             mJumpListener.code(code);
         }
 
-        File file = new File(imagePath);
-        if (file.length() < 512 || !file.exists()) {
-            code = Constans.PICTURE_ERROR;
-            mJumpListener.code(code);
-        }
-
-        if (file.length() > 300 * 1024) {
-            final RangeEntity finalMRangeEntity = mRangeEntity;
-            ImgCompress.zipImg(context, imagePath, new OnCompressListener() {
-                @Override
-                public void onStart() {
-
-                }
-
-                @Override
-                public void onSuccess(File mFile) {
-                    ExZipFilex(finalMRangeEntity,mFile,name);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    //e.printStackTrace();
-                }
-            });
-        } else {
-            ExZipFilex(mRangeEntity,file,name);
-        }
+//        File file = new File(imagePath);
+//        if (file.length() < 512 || !file.exists()) {
+//            code = Constans.PICTURE_ERROR;
+//            mJumpListener.code(code);
+//        }
+//
+//        if (file.length() > 300 * 1024) {
+//            final RangeEntity finalMRangeEntity = mRangeEntity;
+//            ImgCompress.zipImg(context, imagePath, new OnCompressListener() {
+//                @Override
+//                public void onStart() {
+//
+//                }
+//
+//                @Override
+//                public void onSuccess(File mFile) {
+//                    ExZipFilex(finalMRangeEntity,mFile,name);
+//                }
+//
+//                @Override
+//                public void onError(Throwable e) {
+//                    //e.printStackTrace();
+//                }
+//            });
+//        } else {
+            ExZipFilex(mRangeEntity,imagePath,name);
+       // }
     }
 
 
-    private void ExZipFilex(final RangeEntity range, File mfile, final String name) {
+    private void ExZipFilex(final RangeEntity range, final String mfile, final String name) {
 
         final Map<String, Object> normalParams = new HashMap<>();
         normalParams.put("searchCode", name);
@@ -356,7 +357,7 @@ public class SearchImpl {
                                     .class);
                             intent.putExtras(bundle);
                             intent.putExtra("flag",2000);
-                            intent.putExtra("bitmapUriPath", filepath);
+                            intent.putExtra("bitmapUriPath", mfile);
                             intent.putExtra("title", title);
                             mContext.startActivity(intent);
                         }else {
@@ -367,7 +368,7 @@ public class SearchImpl {
                             range.setY1(0);
                             range.setX2(10000);
                             range.setY2(10000);
-                            goImgCut(mContext,filepath, range,name);
+                            goImgCut(mContext,mfile, range,name);
                         }
 
                     }
@@ -384,6 +385,7 @@ public class SearchImpl {
             range.setX2(10000);
             range.setY2(10000);
         }
+        System.out.println("路径1==="+searchImgPath+"==="+ivname);
         Intent intentImg = new Intent(context,  CutPhotoActivity.class);
         intentImg.putExtra("bitmapUriPath", searchImgPath);
         intentImg.putExtra("input",2009);

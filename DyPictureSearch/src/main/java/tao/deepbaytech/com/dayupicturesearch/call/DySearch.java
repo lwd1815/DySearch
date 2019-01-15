@@ -74,21 +74,14 @@ public class DySearch {
      * @param imgPath
      * @param callbackListener
      */
-    public void search(Context context, String imgPath, final DySearchCallbackListener<String> callbackListener) {
+    public void search(Context context, String imgPath,String url ,final DySearchCallbackListener<String> callbackListener) {
         //检查网络
         boolean networkConnected = NetUtil.getInstance().isNetworkConnected(context);
         if (!networkConnected) {
             callbackListener.callback(Constans.NETWORKSTATUE, Constans.NETWORKERROR);
             return;
         }
-       SearchImpl.getInstance().getCode(context, imgPath,callbackListener);
+       SearchImpl.getInstance().getCode(context, imgPath,url,callbackListener);
     }
-
-
-    public void JumpCut(Context context,String imgPath){
-
-
-    }
-
 
 }
