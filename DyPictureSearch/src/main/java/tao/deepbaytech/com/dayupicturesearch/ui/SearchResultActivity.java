@@ -93,6 +93,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
     private String         searchImgPath;
     private String mTitle;
     private int mflag;
+    private String mIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +128,8 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         entity = (ImgSearchEntity) bundle.getParcelable("dy_result");
         mTitle = getIntent().getStringExtra("title");
         mflag = getIntent().getIntExtra("flag",-1);
+        mIds = getIntent().getStringExtra("ids");
+
         if (mTitle==null||mTitle.isEmpty()){
             dytitle.setText(Constans.DEFAULTTITLE);
         }else {
@@ -138,8 +141,14 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
         //2 裁剪后进入   flag==2009
         initcut();
         initRv();
-        refresh();
-        initData();
+
+        if (mflag==2001){
+            normalParams.put("searchCode", mIds);
+        }else {
+            initData();
+            refresh();
+        }
+
 
     }
 
@@ -216,6 +225,7 @@ public class SearchResultActivity extends AppCompatActivity implements DySearchA
                         }
                         adapter.setNewData(normalData);
                         normalParams.put("category", entity.getCategoryId());
+                        System.out.println("ssss"+entity.getCategoryId());
                     }
                 });
     }

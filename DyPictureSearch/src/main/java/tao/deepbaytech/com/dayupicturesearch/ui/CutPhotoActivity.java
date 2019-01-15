@@ -37,6 +37,7 @@ public class CutPhotoActivity extends AppCompatActivity {
     private boolean needCompress = false;
     private float[] nowZuobiao= null;
     private int mInput;
+    private String mName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,8 @@ public class CutPhotoActivity extends AppCompatActivity {
         Log.w("imgPath",imagePath);
         mInput = getIntent().getIntExtra("input", -1);
         nowZuobiao = getIntent().getFloatArrayExtra("zuobiao");
+        mName = getIntent().getStringExtra("name");
+
         if(imagePath.endsWith("-")){
             fromXc = true;
             imagePath = imagePath.substring(0,imagePath.length()-1);
@@ -105,7 +108,6 @@ public class CutPhotoActivity extends AppCompatActivity {
         CutPhotoActivity.this.finish();
     }
 
-
     public Intent Jump(){
         Rect rect = cropImageView.getCropRect();
         //回传坐标数据
@@ -124,6 +126,7 @@ public class CutPhotoActivity extends AppCompatActivity {
         //回传坐标数据
         Intent intent = new Intent();
         intent.putExtra("bitmapUriPath", imagePath);
+        intent.putExtra("name",mName);
         intent.putExtra("zuobiao",new int[]{(int) ((rect.left*1.0/imageWidth)*10000),(int) ((rect.top*1.0/imageHeight)*10000),
                 (int) ((rect.right * 1.0 / imageWidth) * 10000),
                 (int) ((rect.bottom * 1.0 / imageHeight) * 10000)
