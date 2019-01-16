@@ -62,74 +62,14 @@ public class SearchImpl {
 
         String[] split = imagePath.split("/");
         for (int i = 0; i < split.length; i++) {
-            System.out.println("s==="+split[split.length-1]);
             this.filename =split[split.length-1];
         }
-
-//        File file = new File(imagePath);
-//        if (file.length() < 512 || !file.exists()) {
-//            code = Constans.PICTURE_ERROR;
-//            switch (code) {
-//                case Constans.PICTURE_SUCCESS:
-//                    callbackListener.callback(Constans.PICTURE_SUCCESS, Constans.SEARCH_SUCCESS);
-//                    break;
-//                case Constans.PICTURE_ERROR:
-//                    callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
-//                    break;
-//            }
-//        }
-//
-//        if (file.length() > 300 * 1024) {
-//            ImgCompress.zipImg(context, imagePath, new OnCompressListener() {
-//                @Override
-//                public void onStart() {
-//
-//                }
-//
-//                @Override
-//                public void onSuccess(File mFile) {
-//                    xxZipFilex(mFile,callbackListener);
-//                }
-//
-//                @Override
-//                public void onError(Throwable e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//        } else {
             xxZipFilex(local,filename,callbackListener);
-       // }
+
     }
 
 
     private void xxZipFilex(final String mfile,final String name, final DySearchCallbackListener<String> callbackListener) {
-//        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), mfile);
-//        MultipartBody.Part part =
-//                MultipartBody.Part.createFormData("file", mfile.getName(), requestBody);
-//
-//        subscription = HttpSearch.getInstance()
-//                .postImg("http://image-search.dayuyoupin.com/upimage", part,
-//                        new Subscriber<BaseResponse>() {
-//                            @Override
-//                            public void onCompleted() {
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                code = Constans.PICTURE_ERROR;
-//                                switch (code) {
-//                                    case Constans.PICTURE_SUCCESS:
-//                                        callbackListener.callback(Constans.PICTURE_SUCCESS, Constans.SEARCH_SUCCESS);
-//                                        break;
-//                                    case Constans.PICTURE_ERROR:
-//                                        callbackListener.callback(Constans.PICTURE_ERROR, Constans.SEARCH_FAILUER);
-//                                        break;
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onNext(final BaseResponse baseResponse) {
-                                //if (baseResponse.getState() == 0) {
                                     if (subscription != null && subscription.isUnsubscribed()) {
                                         subscription.unsubscribe();
                                     }
@@ -201,7 +141,7 @@ public class SearchImpl {
                                                                                     + range.getY2());
                                                                             normalParams.put("category", cropData.getCategoryId());
                                                                             normalParams.put("sex", cropData.getAttribute());
-                                                                            normalParams.put("userBox", 0);
+                                                                            normalParams.put("userBox", 1);
 
                                                                             if (subscription != null && subscription.isUnsubscribed()) {
                                                                                 subscription.unsubscribe();
@@ -260,9 +200,6 @@ public class SearchImpl {
                                                         }
 
                                                     });
-                               // }
-                           // }
-                        //});
 
     }
 
@@ -287,34 +224,7 @@ public class SearchImpl {
             code = Constans.PICTURE_ERROR;
             mJumpListener.code(code);
         }
-
-//        File file = new File(imagePath);
-//        if (file.length() < 512 || !file.exists()) {
-//            code = Constans.PICTURE_ERROR;
-//            mJumpListener.code(code);
-//        }
-//
-//        if (file.length() > 300 * 1024) {
-//            final RangeEntity finalMRangeEntity = mRangeEntity;
-//            ImgCompress.zipImg(context, imagePath, new OnCompressListener() {
-//                @Override
-//                public void onStart() {
-//
-//                }
-//
-//                @Override
-//                public void onSuccess(File mFile) {
-//                    ExZipFilex(finalMRangeEntity,mFile,name);
-//                }
-//
-//                @Override
-//                public void onError(Throwable e) {
-//                    //e.printStackTrace();
-//                }
-//            });
-//        } else {
             ExZipFilex(mRangeEntity,imagePath,name);
-       // }
     }
 
 
