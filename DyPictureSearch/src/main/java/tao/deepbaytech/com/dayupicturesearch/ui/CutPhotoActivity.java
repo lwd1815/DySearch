@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -17,6 +18,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import tao.deepbaytech.com.dayupicturesearch.R;
 import tao.deepbaytech.com.dayupicturesearch.custom.MetaballView;
+import tao.deepbaytech.com.dayupicturesearch.custom.Rx;
+import tao.deepbaytech.com.dayupicturesearch.custom.RxBus;
 import tao.deepbaytech.com.dayupicturesearch.net.SearchImpl;
 
 public class CutPhotoActivity extends AppCompatActivity {
@@ -38,6 +41,7 @@ public class CutPhotoActivity extends AppCompatActivity {
     private float[] nowZuobiao= null;
     private int mInput;
     private String mName;
+    private int code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,8 @@ public class CutPhotoActivity extends AppCompatActivity {
         cutBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                code=5;
+                RxBus.getDefault().post(new Rx(code));
                 finish();
             }
         });
@@ -91,6 +97,16 @@ public class CutPhotoActivity extends AppCompatActivity {
         });
     }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+            code=5;
+            RxBus.getDefault().post(new Rx(code));
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
     public void NormalJump(){
         Intent eIntent = Jump();
         eIntent.putExtra("flag",2000);
@@ -103,8 +119,9 @@ public class CutPhotoActivity extends AppCompatActivity {
         Intent eIntent = Jumps();
         eIntent.putExtra("flag",2000);
         //CutPhotoActivity.this.startActivity(eIntent);
-        SearchImpl.getInstance().Exrequest(CutPhotoActivity.this,eIntent);
         CutPhotoActivity.this.finish();
+        SearchImpl.getInstance().Exrequest(CutPhotoActivity.this,eIntent);
+
     }
 
     public Intent Jump(){
